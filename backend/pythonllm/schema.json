@@ -1,0 +1,156 @@
+{
+  "$defs": {
+    "OceanTrait": {
+      "properties": {
+        "score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Score",
+          "type": "integer"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "score",
+        "description"
+      ],
+      "title": "OceanTrait",
+      "type": "object"
+    },
+    "OceanTraits": {
+      "properties": {
+        "openness": {
+          "$ref": "#/$defs/OceanTrait"
+        },
+        "conscientiousness": {
+          "$ref": "#/$defs/OceanTrait"
+        },
+        "extraversion": {
+          "$ref": "#/$defs/OceanTrait"
+        },
+        "agreeableness": {
+          "$ref": "#/$defs/OceanTrait"
+        },
+        "neuroticism": {
+          "$ref": "#/$defs/OceanTrait"
+        }
+      },
+      "required": [
+        "openness",
+        "conscientiousness",
+        "extraversion",
+        "agreeableness",
+        "neuroticism"
+      ],
+      "title": "OceanTraits",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "interests": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Interests",
+      "type": "array"
+    },
+    "career_suggestions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Career Suggestions",
+      "type": "array"
+    },
+    "mapped_interest_to_careers": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Mapped Interest To Careers",
+      "type": "object"
+    },
+    "career_justifications": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Career Justifications",
+      "type": "object"
+    },
+    "interest_traits": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Interest Traits",
+      "type": "object"
+    },
+    "confidence_scores": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Confidence Scores",
+      "type": "object"
+    },
+    "values": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Values",
+      "type": "array"
+    },
+    "emotional_patterns": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Emotional Patterns",
+      "type": "array"
+    },
+    "self_concept_attributes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Self Concept Attributes",
+      "type": "array"
+    },
+    "ocean_traits": {
+      "$ref": "#/$defs/OceanTraits"
+    },
+    "content_themes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Content Themes",
+      "type": "array"
+    },
+    "psychological_insights": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Psychological Insights",
+      "type": "array"
+    }
+  },
+  "required": [
+    "interests",
+    "career_suggestions",
+    "mapped_interest_to_careers",
+    "career_justifications",
+    "interest_traits",
+    "confidence_scores",
+    "values",
+    "emotional_patterns",
+    "self_concept_attributes",
+    "ocean_traits",
+    "content_themes",
+    "psychological_insights"
+  ],
+  "title": "ModelResponse",
+  "type": "object"
+}

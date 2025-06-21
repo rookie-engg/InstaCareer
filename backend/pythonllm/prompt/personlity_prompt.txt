@@ -1,0 +1,43 @@
+Analyze the above YouTube video history and provide a personality assessment.
+
+Your response must be a single valid JSON object — nothing else, no explanations or commentary before or after the JSON.
+
+Strict Output Format (Use double quotes for all strings and keys):
+{
+  "values": [list of core values as strings],
+  "emotional_patterns": [list of emotional patterns as strings],
+  "self_concept": [list of self-concept attributes as strings],
+  "ocean_traits": {
+    "openness": {
+      "score": integer from 0 to 100,
+      "description": string
+    },
+    "conscientiousness": {
+      "score": integer from 0 to 100,
+      "description": string
+    },
+    "extraversion": {
+      "score": integer from 0 to 100,
+      "description": string
+    },
+    "agreeableness": {
+      "score": integer from 0 to 100,
+      "description": string
+    },
+    "neuroticism": {
+      "score": integer from 0 to 100,
+      "description": string
+    }
+  },
+  "content_themes": [list of recurring themes as strings],
+  "psychological_insights": [list of personality insights as strings]
+}
+
+Guidelines:
+1. Base all analysis on patterns found in the video titles and descriptions.
+2. Accurately infer values, emotional tendencies, and self-perception.
+3. Score each OCEAN trait based on standard personality benchmarks (50 = average).
+4. Justify each trait score with evidence from content themes.
+5. Output must be a well-formed, parsable JSON string using double quotes only.
+
+IMPORTANT: Do NOT add any explanatory text before or after the JSON. Only output the raw JSON object in valid format.
