@@ -13,7 +13,10 @@ class TaskResult(TypedDict):
     model_promt: str
     model_res: str
 
-
+class KfkaProducerResponse(TypedDict):
+    id: str
+    err: str | None
+    result: TaskResult
 
 class OceanTrait(BaseModel):
     score: int = Field(..., ge=0, le=100)

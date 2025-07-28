@@ -17,18 +17,6 @@ class OllamaLLM():
 
     def get_model_json_response(self, prompt: str) -> str:
         try:
-            # response = self._client.generate(
-            #     model=self._model,
-            #     messages=[{
-            #         'role': 'user',
-            #         'content': prompt
-            #     }],
-            #     options={
-            #         'temperature': self._temprature,
-            #         'num_ctx': self._num_ctx,
-            #     },
-            #     format='json'
-            # )
             response = self._client.generate(
                 model=self._model,
                 prompt=prompt,

@@ -1,4 +1,4 @@
-import json
+import json, kafka
 import sys, signal
 
 from typing import List, Tuple
@@ -85,6 +85,20 @@ def task_result_dispatcher(q: Queue[TaskResult]) -> None:
         print("Fatal error in task_result_dispatcher")
         quit_event.set()
 
+def task_result_kafka_producer(
+        q: Queue[TaskResult], 
+        producer: kafka.KafkaProducer,
+        reply_topic: str
+    ) -> None:
+
+    while not quit_event.is_set():
+        val = q.get()
+        print("Sending task result to kafka queue: \n")
+        print('-'*10)
+        print(val)
+        print('-'*10)
+        producer.send(reply_topic, value=val)
+
 def task_processor_worker(
     ollama_instance: OllamaLLM,
     database_instance: Database,
@@ -133,6 +147,39 @@ def task_processor_worker(
 class TaskParsingException(Exception):
     def __init__(self, msg: str):
         super().__init__(msg)
+
+def is_valid_task(data) -> Tuple[bool, str | None]:
+    try:
+        # task = json.loads(data)
+        task = data
+        if not isinstance(task, dict):
+            raise TaskParsingException('Invalid json structure')
+
+        if 'id' not in task:
+            raise TaskParsingException('missing field id')
+
+        if 'activities' not in task:
+            raise TaskParsingException('missing field activities')
+
+        if not isinstance(task['activities'], list):
+            raise TaskParsingException(
+                'invalid type of activities; should be list'
+            )
+
+        for activity in task['activities']:
+            if 'title' not in activity:
+                raise TaskParsingException('missing field title in activities')
+            if 'titleUrl' not in activity:
+                raise TaskParsingException('missing field titleUrl in activities')
+
+    except json.JSONDecodeError as e:
+        return False, f"JSON parse error: {e}"
+    except TaskParsingException as e:
+        return False, str(e)
+    except Exception as e:
+        return False, str(e)
+
+    return True, None
 
 @socketio.on(PUT_INTO_TASK_QUEUE)
 def handle_incoming_task(data: str):
@@ -189,6 +236,11 @@ if __name__ == '__main__':
     load_dotenv(verbose=True, override=True)
     from os import environ
 
+    print('loaded ENV values')
+    from pprint import pprint
+    for k, v in environ.items():
+        print(f'{k.ljust(15)}: {v}')
+
     max_workers = 5
     with open('./prompt/all.text') as file:
         prompt = file.read()
@@ -204,6 +256,25 @@ if __name__ == '__main__':
         dname=environ.get('DATABASE_NAME')
     )
 
+    topic = environ.get('KAFKA_CONSUMER_TOPIC')
+    kafka_grp = environ.get('KAFKA_GROUP')
+    reply_topic = environ.get('KAFKA_REPLY_TOPIC')
+    kafka_server = environ.get('KAFKA_SERVER')
+
+    consumer = kafka.KafkaConsumer(
+        topic,
+        bootstrap_servers=[kafka_server],
+        group_id=kafka_grp,
+        auto_offset_reset='earliest',          # Start from beginning if no offset
+        enable_auto_commit=True,  
+        value_deserializer=lambda m: json.loads(m.decode('utf-8'))
+    )
+
+    producer = kafka.KafkaProducer(
+        bootstrap_servers=[kafka_server],
+        value_serializer=lambda m: json.dumps(m).encode('utf-8')
+    )
+
     save_to_db_thread = Thread(
         target=database_writer_worker,
         kwargs={
@@ -216,6 +287,10 @@ if __name__ == '__main__':
     result_dispatch_thread = Thread(
         target=task_result_dispatcher,
         args=(task_result_queue,)
+    )
+    kafka_producer_thread = Thread(
+        target=task_result_kafka_producer,
+        args=(task_result_queue, producer, reply_topic,)
     )
     task_processor_thread = Thread(
         target=task_processor_worker,
@@ -230,17 +305,41 @@ if __name__ == '__main__':
         }
     )
     save_to_db_thread.start()
-    result_dispatch_thread.start()
+    # result_dispatch_thread.start()
+    kafka_producer_thread.start()
     task_processor_thread.start()
 
     try:
-        socketio.run(
-            app=app,
-            host=environ.get('SERVER_HOST'),
-            port=int(environ.get('SERVER_PORT')),
-            debug=False,
-            allow_unsafe_werkzeug=True
-        )
+        # socketio.run(
+        #     app=app,
+        #     host=environ.get('SERVER_HOST'),
+        #     port=int(environ.get('SERVER_PORT')),
+        #     debug=False,
+        #     allow_unsafe_werkzeug=True
+        # )
+        print('starting the kafka consumer')
+
+        for msg in consumer:
+            # print(msg)
+            # print(msg.value.get('id'))
+            # continue
+            msg = msg.value
+            id = msg.get('id')
+            if not id:
+                continue
+            print(f'message recived id: {id}')
+
+            is_valid, err = is_valid_task(msg)
+            if not is_valid:
+                producer.send(reply_topic, value={
+                    'id': id,
+                    'err': err,
+                    'result': None
+                })
+                continue
+
+            task_queue.put(msg)
+
     except Exception as e:
         print(e)
         quit_event.set()
