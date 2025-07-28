@@ -2,7 +2,6 @@
 .env
 **/__pycache__
 **/db-storage
-**/nltk_data
 ollama
 **test**
 **/dist/
