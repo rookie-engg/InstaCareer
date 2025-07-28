@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Playball&family=Poppins&display=swap');
+
+#features {
+    background: linear-gradient(to right, #9fa7cbd4, #d7fafed0);
+}
+/* Section Heading */
+.section-heading {
+  font-family: 'Playball', cursive;
+  font-size: 2.2rem;
+  color: #1c1c3c;
+  animation: slideFadeDown 3s ease forwards;
+  opacity: 0;
+}
+
+/* Card Base */
+.feature-card {
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 3s ease both;
+  opacity: 0;
+  transform: scale(1);
+  cursor: pointer;
+  will-change: transform;
+}
+
+/* Card Hover Animation */
+.feature-card:hover {
+  transform: translateY(-14px) scale(1.07);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card:active {
+  transform: scale(0.95);
+}
+
+/* Inner Content Pop Effect */
+.card-title,
+.card-text {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-title,
+.card-text {
+  transition: transform 0.3s ease-in-out;
+  transform: scale(1); /* default */
+}
+
+.feature-card:hover .card-title,
+.feature-card:hover .card-text {
+  transform: scale(0.9) translateY(4px); /* pop inwards on hover */
+}
+
+
+/* Font Size Reduced */
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.card-text {
+  font-size: 0.92rem;
+  color: #444;
+}
+
+/* Fade-In Directions */
+.fade-in-left {
+  animation: fadeInLeft 0.8s ease forwards;
+}
+
+.fade-in-right {
+  animation: fadeInRight 0.8s ease forwards;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Keyframes */
+@keyframes fadeInLeft {
+  0% {
+    transform: translateX(-80px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    transform: translateX(80px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(60px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideFadeDown {
+  0% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

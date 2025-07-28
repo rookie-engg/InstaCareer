@@ -1,0 +1,103 @@
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Playball&family=Poppins&family=Great+Vibes&display=swap');
+
+/* Background */
+.hero-container {
+  background-image: url('/public/images/image2.png'); /* remove /public, just /images */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  position: relative;
+}
+
+/* Text Container */
+.hero-container .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Font Styling */
+.hero-heading {
+  font-family: 'Playball', cursive;
+}
+
+.hero-subheading {
+  font-family: 'Playball', cursive;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #284fdc, #ee0979);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Button */
+.gradient-button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  padding: 12px 28px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  background: linear-gradient(to right, #ff6a00, #ee0979);
+  transition: all 0.5s ease-in-out;
+  box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
+}
+
+.gradient-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(238, 9, 121, 0.5);
+}
+
+/* Animations */
+.animate-slide-down {
+  animation: slideDown 3s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-right {
+  animation: slideRight 2s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+.animate-slide-left {
+  animation: slideLeft 1s ease-out 0.6s forwards;
+  opacity: 0;
+}
+
+/* Keyframes */
+@keyframes slideDown {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

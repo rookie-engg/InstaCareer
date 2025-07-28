@@ -1,0 +1,86 @@
+/* General page settings */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', Times, serif, 'Arial Narrow', Arial, sans-serif;
+}
+
+/* Page height class */
+.full-height {
+  height: 100vh;
+}
+
+/* Login box container */
+.login_container {
+  padding: 3rem;
+  border: none;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+/* Image section */
+
+.image-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+}
+
+
+
+
+/* Custom input styling */
+.custom-input {
+  border: none;
+  background-color: #f8f9fa;
+  font-weight: 300;
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+.custom-input::placeholder {
+  color: #adb5bd;
+  font-weight: 300;
+}
+
+/* Submit Button styling */
+.custom-btn {
+  margin-top: 2rem;
+  background: linear-gradient(to right, #9f5ce7, #b42bd6);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.custom-btn:hover {
+  opacity: 0.9;
+}
+
+/* Google login button */
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 1px solid #dbd8d8;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.google-btn img {
+  width: 18px;
+  margin-right: 10px;
+}

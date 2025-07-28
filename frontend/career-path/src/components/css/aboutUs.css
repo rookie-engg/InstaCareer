@@ -1,0 +1,83 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playball&family=Poppins&display=swap');
+
+.aboutus-section {
+  position: relative;
+  background-image: url('/public/images/carosel4.jpeg'); /* ❗ remove /public – React doesn't use it */
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 60px 0;
+  color: #000;
+  font-family: 'Poppins', sans-serif;
+}
+
+.aboutus-overlay {
+  background-color: rgba(205, 240, 236, 0.85);
+  border-radius: 10px;
+  padding: 2rem;
+  animation: fadeUp 1s ease-out;
+}
+
+/* Section Title */
+.aboutus-title {
+  font-family: 'Playball', cursive;
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #161152;
+  margin-bottom: 1rem;
+}
+
+/* Paragraph Text */
+.aboutus-text {
+  font-family: 'Poppins', sans-serif;
+  color: rgb(71, 65, 105);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Team Avatars */
+.aboutus-team img {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.aboutus-team img:hover {
+  transform: scale(1.1);
+}
+
+/* Call to Action Button */
+.aboutus-section button {
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  padding: 10px 26px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  background: linear-gradient(to right, #ff6a00, #ee0979);
+  box-shadow: 0 4px 15px rgba(238, 9, 121, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.aboutus-section button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(238, 9, 121, 0.5);
+}
+
+/* Fade In Animation */
+@keyframes fadeUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

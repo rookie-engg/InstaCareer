@@ -1,0 +1,46 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playball&family=Poppins&display=swap');
+
+.testimonials-section {
+  background-color: #f9f9ff;
+  padding: 4rem 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Section Heading */
+.testimonials-heading {
+  font-family: 'Playball', cursive;
+  font-size: 2.5rem;
+  color: #2c2c6c;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+/* Testimonial Card */
+.testimonial-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Testimonial Text */
+.testimonial-card p {
+  font-size: 1rem;
+  color: #333;
+  font-style: italic;
+}
+
+/* User Name / Footer */
+.card-text.testimonial-text {
+    font-size: 0.95rem;
+    color: #333;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  

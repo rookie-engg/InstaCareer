@@ -1,0 +1,41 @@
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playball&family=Poppins&display=swap');
+#howworks {
+background: linear-gradient(to right, #9fa7cbd4, #d7fafed0);
+}
+
+.how-it-works-section {
+  background: linear-gradient(to right, #c7e4e0, #9d9de3);
+  border-radius: 8px;
+  padding: 2rem 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Section Heading */
+.how-it-works-section-heading {
+  font-family: 'Playball', cursive;
+  font-size: 2.5rem;
+  color: #2a2a72; /* deep indigo */
+  margin-bottom: 2rem;
+}
+
+/* Slide Title */
+.how-it-works-section h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  color: #1c1c3c; /* deep navy */
+}
+
+/* Paragraph */
+.how-it-works-section p {
+  font-size: 1rem;
+  color: #191c19; /* muted black-blue */
+}
+
+/* Highlights (List Items) */
+.how-it-works-section ul {
+  padding-left: 1.5rem;
+  font-size: 0.95rem;
+  color: #11111e; /* soft dark */
+}
