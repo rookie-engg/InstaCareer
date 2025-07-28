@@ -4,7 +4,6 @@
 > devs be like:  
 > ![This is fine](https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif)
 
-👷‍♂️👷‍♂️👷‍♂️ Currently building the next big thing nobody asked for.  
 ⚙️ Expect bugs, chaos, and occasional breakthroughs.  
 💡 Feature ideas come to us in dreams... and Stack Overflow comments.  
 🧠 AI is helping. So if it breaks, blame the robots.
