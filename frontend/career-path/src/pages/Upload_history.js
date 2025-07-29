@@ -46,19 +46,22 @@ const Upload_history = () => {
     }
 
     const formData = new FormData();
-    formData.append('file', file); // 👈 use the correct key your backend expects
+    formData.append('file', file); // Must match @RequestParam("file")
 
     try {
       const response = await fetch('http://localhost:8080/api/files/uploadZip', {
         method: 'POST',
         body: formData,
+        // 🚫 Don't set Content-Type — browser handles it
       });
 
       if (response.ok) {
-        setMessage('✅ File uploaded successfully!');
+        const result = await response.text();
+        setMessage(`✅ ${result}`);
         setFile(null);
       } else {
-        setMessage('❌ Upload failed.');
+        const errorText = await response.text();
+        setMessage(`❌ ${errorText}`);
       }
     } catch (err) {
       console.error('Upload error:', err);

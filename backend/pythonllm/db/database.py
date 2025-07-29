@@ -4,22 +4,26 @@ from youtube.youtube_types import VideoDescription
 
 class Database():
 
-    def __init__(self, host: str, port: int, dname: str):
+    def __init__(self, host: str, username: str, password: str, port: int, dname: str, auth_source: str):
         self._DATABASE_HOST: str = host
         self._DATABASE_PORT: int = port
         self._DATABASE_NAME: str = dname
+        self._DATABASE_USERNAME: str = username
+        self._DATABASE_PASSWORD: str = password
+        self._DATABASE_AUTH_SOURCE: str = auth_source
         self._RAW_COLLECTION_NAME: str = 'raw_descriptions'
         self._PROCESSED_COLLECTION_NAME: str = 'processed_descriptions'
-        self._URL_KEY = 'titleUrl'
         self._TITLE_KEY = 'title'
+        self._URL_KEY = 'titleUrl'
         self._DESCRIPTION_KEY = 'description'
         self._client = MongoClient(
             host=self._DATABASE_HOST, 
             port=self._DATABASE_PORT,
-            username='root',
-            password='root',
-            authSource='admin'
+            username=self._DATABASE_USERNAME,
+            password=self._DATABASE_PASSWORD,
+            authSource=self._DATABASE_AUTH_SOURCE
         )
+        
         self._database = self._client.get_database(name=self._DATABASE_NAME)
         self._raw_description_collection = self._database.get_collection(name=self._RAW_COLLECTION_NAME)
         self._processed_description_collection = self._database.get_collection(name=self._PROCESSED_COLLECTION_NAME)

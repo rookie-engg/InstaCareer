@@ -2,7 +2,9 @@
 .env
 **/__pycache__
 **/db-storage
+**/nltk_data
 ollama
+docker-dist
 **test**
 **/dist/
 dist.zip

@@ -3,6 +3,7 @@ import sys, signal
 
 from typing import List, Tuple
 from concurrent.futures import Future, ThreadPoolExecutor
+from queue import Empty
 
 from flask import Flask
 from flask_cors import CORS
@@ -40,7 +41,7 @@ def database_writer_worker(
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             while not quit_event.is_set():
                 try:
-                    raw, processed = save_desc_queue.get()
+                    raw, processed = save_desc_queue.get(timeout=1)
                     executor.submit(
                         database_instance.
                         save_in_raw_youtube_description_bulk,
@@ -59,6 +60,8 @@ def database_writer_worker(
                             'Saved processed description to database'
                         )
                     )
+                except Empty:
+                    continue
                 except Exception as e:
                     print(e)
                     print("Error in database_writer_worker")
@@ -72,10 +75,12 @@ def task_result_dispatcher(q: Queue[TaskResult]) -> None:
     try:
         while not quit_event.is_set():
             try:
-                res = q.get()
+                res = q.get(timeout=1)
                 with app.app_context():
                     socketio.emit(SEND_TASK_RESPONSE, json.dumps(res))
                 print(f'task with id: {res["id"]} sent to client')
+            except Empty:
+                continue
             except Exception as e:
                 print(e)
                 print("Error in task_result_dispatcher")
@@ -92,12 +97,15 @@ def task_result_kafka_producer(
     ) -> None:
 
     while not quit_event.is_set():
-        val = q.get()
-        print("Sending task result to kafka queue: \n")
-        print('-'*10)
-        print(val)
-        print('-'*10)
-        producer.send(reply_topic, value=val)
+        try:
+            val = q.get(timeout=1)
+            print("Sending task result to kafka queue: \n")
+            print('-'*10)
+            print(val)
+            print('-'*10)
+            producer.send(reply_topic, value=val)
+        except Empty:
+            continue
 
 def task_processor_worker(
     ollama_instance: OllamaLLM,
@@ -125,7 +133,7 @@ def task_processor_worker(
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             while not quit_event.is_set():
                 try:
-                    task = task_q.get()
+                    task = task_q.get(timeout=1)
                     future = executor.submit(
                         video_description_task_executor,
                         task=task,
@@ -135,6 +143,8 @@ def task_processor_worker(
                         save_desc_queue=save_desc_queue
                     )
                     future.add_done_callback(callback)
+                except Empty:
+                    continue
                 except Exception as e:
                     print(e)
                     print("Error in task_processor_worker")
@@ -253,7 +263,10 @@ if __name__ == '__main__':
     database_instance = Database(
         host=environ.get('DATABASE_HOST'),
         port=int(environ.get('DATABASE_PORT')),
-        dname=environ.get('DATABASE_NAME')
+        username=environ.get('DATABASE_USERNAME'),
+        password=environ.get('DATABASE_PASSWORD'),
+        dname=environ.get('DATABASE_NAME'),
+        auth_source=environ.get('DATABASE_AUTH_SOURCE')
     )
 
     topic = environ.get('KAFKA_CONSUMER_TOPIC')
@@ -265,7 +278,7 @@ if __name__ == '__main__':
         topic,
         bootstrap_servers=[kafka_server],
         group_id=kafka_grp,
-        auto_offset_reset='earliest',          # Start from beginning if no offset
+        auto_offset_reset='latest',
         enable_auto_commit=True,  
         value_deserializer=lambda m: json.loads(m.decode('utf-8'))
     )
