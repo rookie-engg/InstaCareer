@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import '../components/css/history.css';
+
 const Upload_history = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -14,9 +16,9 @@ const Upload_history = () => {
     }
 
     // ✅ File type validation
-    const allowedTypes = ['application/pdf', 'image/png'];
+    const allowedTypes = ['application/zip', 'application/x-zip-compressed'];
     if (!allowedTypes.includes(selectedFile.type)) {
-      setError('Only PDF and PNG files are allowed.');
+      setError('Only ZIP files are allowed.');
       setFile(null);
       return;
     }
@@ -34,31 +36,63 @@ const Upload_history = () => {
     console.log('Valid file selected:', selectedFile.name);
   };
 
-  return (
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage('');
 
-      <section id='uhistory'>
-        <div className='outerContainer' style={{ width: '18rem', margin: '0 auto' }}>
-          <div className="upload-container">
-            <div className="folder">
-              <div className="front-side">
-                <div className="tip" />
-                <div className="cover" />
-              </div>
-              <div className="back-side cover" />
+    if (!file) {
+      setError('No file selected to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file); // 👈 use the correct key your backend expects
+
+    try {
+      const response = await fetch('http://localhost:8080/api/files/uploadZip', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        setMessage('✅ File uploaded successfully!');
+        setFile(null);
+      } else {
+        setMessage('❌ Upload failed.');
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      setMessage('❌ Something went wrong while uploading.');
+    }
+  };
+
+  return (
+    <section id='uhistory'>
+      <div className='outerContainer' style={{ width: '18rem', margin: '0 auto' }}>
+        <div className="upload-container">
+          <div className="folder">
+            <div className="front-side">
+              <div className="tip" />
+              <div className="cover" />
             </div>
+            <div className="back-side cover" />
+          </div>
+          <form onSubmit={handleSubmit}>
             <label className="custom-file-upload">
               <input className="title" type="file" onChange={handleFileChange} />
-              Choose a file
+              Choose a ZIP file
             </label>
 
-            <button className='custom-file-upload mt-1'>submitt</button>
+            <button type="submit" className='btn custom-file-upload mt-1'>Submit</button>
+
             {/* ⚠️ Error Message */}
             <center>{error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}</center>
-
-            {/* ✅ Show selected file */}
             <center>{file && <p style={{ color: '#076780ff', marginTop: '10px' }}>Selected: {file.name}</p>}</center>
-          </div>
+            <center>{message && <p style={{ color: message.includes('✅') ? 'green' : 'red' }}>{message}</p>}</center>
+          </form>
         </div>
+      </div>
+
       <div className='Instruction'>
         <center>
           <h5>Instructions:</h5>
@@ -72,11 +106,9 @@ const Upload_history = () => {
               <li>Upload that ZIP file here.</li>
             </ol>
           </div>
-
         </center>
       </div>
     </section>
-    
   );
 };
 
