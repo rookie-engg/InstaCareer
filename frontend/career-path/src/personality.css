@@ -1,0 +1,27 @@
+
+.outer {
+  width: 100%;
+  min-height: 100vh;
+   /* background: linear-gradient(to right, #eeedf0, #d5dffd); */
+   padding: 2rem;
+}
+#heading{
+    padding: 2rem;
+    font-family:'Times New Roman', Times, serif;
+}
+.Interest-Traits{
+    background-color: white;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.Core-Values {
+    background-color: white;
+    margin: 2rem 4rem;
+    padding: 1rem;
+    
+    border-radius: 1rem;
+    box-shadow:0 4px 10px rgba(0, 0, 0, 0.1);
+}

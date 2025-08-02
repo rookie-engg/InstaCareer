@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import '../components/css/history.css';
+import { useNavigate } from 'react-router-dom';
 
 const Upload_history = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const navigator = useNavigate();
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const selectedFile = event.target.files[0];
 
     if (!selectedFile) {
@@ -49,16 +51,17 @@ const Upload_history = () => {
     formData.append('file', file); // Must match @RequestParam("file")
 
     try {
-      const response = await fetch('http://localhost:8080/api/files/uploadZip', {
+      const response = await fetch('/icareer/api/files/uploadZip', {
         method: 'POST',
         body: formData,
         // 🚫 Don't set Content-Type — browser handles it
       });
 
       if (response.ok) {
-        const result = await response.text();
-        setMessage(`✅ ${result}`);
+        const id = await response.text();
+        setMessage(`✅ correlatedid ${id}`);
         setFile(null);
+        await navigator(`/dashboard/${id}`);
       } else {
         const errorText = await response.text();
         setMessage(`❌ ${errorText}`);
