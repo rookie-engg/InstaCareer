@@ -1,0 +1,3 @@
+[submodule "backend/springboot/INSTA-CAREER"]
+	path = backend/springboot/INSTA-CAREER
+	url = https://github.com/sv-dac/INSTA-CAREER.git
