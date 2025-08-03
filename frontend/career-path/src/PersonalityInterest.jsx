@@ -82,7 +82,7 @@
 // export default PersonalityInterest;
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const PersonalityInterest = () => {
   // console.log(modelRes)
@@ -166,6 +166,7 @@ const PersonalityInterest = () => {
   const REQUEST_STATE = { PENDING: 'pending', FAILED: 'failed', COMPLETED: 'completed', NOTFOUND: 'notfound' }
 
   // Function to generate a random color
+  const navigator = useNavigate();
   const { correlatedId } = useParams();
   const [modelRes, setModelRes] = useState(null);
   // oceanTraits, coreValues, emotionalPatterns, interestTraits, selfConcept 
@@ -255,19 +256,17 @@ const PersonalityInterest = () => {
 
     const pollingRequestStatus = setInterval(() => {
       fetch(`/icareer/api/profile/${correlatedId}`).then(async (res) => {
-        
-        if (res.status == 404 || res.status == 400) {
+        if (res.status === 404 || res.status === 400) {
           setRequestStatus(REQUEST_STATE.NOTFOUND);
           clearInterval(pollingRequestStatus);
         }
 
-        if (res.status == 200) {
+        if (res.status === 200) {
           clearInterval(pollingRequestStatus);
           setRequestStatus(REQUEST_STATE.COMPLETED);
 
           let data = transformData(await res.json());
-          console.log(data);
-          
+
           const { oceanTraits, coreValues, emotionalPatterns, interestTraits, selfConcept } = data;
           setModelRes(data);
           setOceanTraits(oceanTraits);
@@ -278,30 +277,37 @@ const PersonalityInterest = () => {
           return;
         }
 
-        if (res.status == 202) {
+        if (res.status === 202) {
           setRequestStatus(REQUEST_STATE.PENDING);
           return;
         }
 
-        if (res.status == 500) {
+        if (res.status === 500) {
           setRequestStatus(REQUEST_STATE.FAILED);
           clearInterval(pollingRequestStatus);
         }
-
       });
-    }, 500);
+    }, 1000);
 
-  }, []);
+    return () => {
+      clearInterval(pollingRequestStatus);
+    };
+
+  }, [correlatedId]);
 
 
   const cx = 200, cy = 200, radius = 150;
 
-  if (requestStatus == REQUEST_STATE.PENDING) return (<>
-    <h1>UserId still processing</h1>
-    <div className="spinner-border" role="status">
-      <span className="visually-hidden">Loading...</span>
+  if (requestStatus == REQUEST_STATE.PENDING) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <div className="text-center">
+        <h1>Your Profile is processing</h1>
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
     </div>
-  </>);
+  );
 
   if (requestStatus == REQUEST_STATE.FAILED) return (
     <h1>Request Processing Failed</h1>
@@ -408,7 +414,7 @@ const PersonalityInterest = () => {
         </svg>
       </div>
 
-      <div className="row mt-4">
+      <div className="row mt-4 mb-4">
         {oceanTraits && oceanTraits.map((trait, idx) => (
           <div className="col-md-6 mb-4" key={idx}>
             <div className="card shadow-sm">
@@ -426,6 +432,9 @@ const PersonalityInterest = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="row">
+        <button className='btn btn-primary' onClick={() => navigator(`/dashboard/career/${correlatedId}`)}>Careers Suggestions</button>
       </div>
     </div>
   );

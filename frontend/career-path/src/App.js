@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Upload_history from './pages/Upload_history';
 import PersonalityInterest from './PersonalityInterest';
+import CareerSuggestion from './CareerSuggestion';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/upload" element={<Upload_history />} />
         <Route path="/dashboard/:correlatedId" element={<PersonalityInterest />} />
+        <Route path="/dashboard/career/:correlatedId" element={<CareerSuggestion />} />
       </Routes>
     </Router>
   );
