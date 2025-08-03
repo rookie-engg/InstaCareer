@@ -1,0 +1,68 @@
+Analyze the above YouTube video history and provide a detailed career and personality assessment in a single JSON object. Your analysis should include inferred interests, suggested career paths relevant to the Indian and global job markets, and a personality profile using the OCEAN model. Use only the video titles and descriptions as your data source.
+
+Your response must be a single valid JSON object. Do NOT include any markdown formatting (like ```json or ```), and do NOT add any commentary before or after the JSON.
+
+Strict Output Format (Use double quotes for all strings and keys):
+
+{
+  "interests": [list of inferred interests as strings],
+  "career_suggestions": [list of suggested careers as distinct strings — each must be a unique, well-defined career (no slashes or compound titles) atleast 8 values],
+  "mapped_interest_to_careers": {
+    "interest_1": ["career_1", "career_2"],
+    "interest_2": ["career_3"]
+    // ... more mappings
+  },
+  "career_justifications": {
+    "career_1": "Brief explanation of why this career fits based on inferred interests and traits.",
+    "career_2": "Another explanation."
+    // ... more justifications
+  },
+  "interest_traits": {
+    "interest_1": ["trait_1", "trait_2"],
+    "interest_2": ["trait_3"]
+    // ... more trait mappings
+  },
+  "confidence_scores": {
+    "career_1": 0.85,
+    "career_2": 0.78
+    // ... more confidence scores (range: 0.0 - 1.0)
+  },
+  "values": [list of core values as strings],
+  "emotional_patterns": [list of emotional patterns as strings],
+  "self_concept_attributes": [list of self-concept attributes as strings],
+  "ocean_traits": {
+    "openness": {
+      "score": integer from 0 to 100,
+      "description": string
+    },
+    "conscientiousness": {
+      "score": integer from 0 to 100,
+      "description": string
+    },
+    "extraversion": {
+      "score": integer from 0 to 100,
+      "description": string
+    },
+    "agreeableness": {
+      "score": integer from 0 to 100,
+      "description": string
+    },
+    "neuroticism": {
+      "score": integer from 0 to 100,
+      "description": string
+    }
+  },
+  "content_themes": [list of recurring themes as strings],
+  "psychological_insights": [list of personality insights as strings]
+}
+
+Additional Guidelines:
+1. Base your analysis only on the YouTube video titles and descriptions above.
+2. Do not use slashes ("/") in career names. If two closely related careers apply, list them separately.
+3. Accurately infer values, emotional tendencies, and self-perception from content patterns.
+4. Score each OCEAN trait based on standard personality benchmarks (50 = average).
+5. Output must be a well-formed, parsable JSON string using double quotes only.
+6. All keys must appear even if some arrays are empty.
+
+IMPORTANT: Do NOT add any explanatory text before or after the JSON. Only output the raw JSON object in valid format.
+IMPORTANT: Give the json in one single line so NO "\n" charater is added

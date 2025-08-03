@@ -1,0 +1,39 @@
+Based on the YouTube watch history provided above, analyze the user's interests and suggest the most suitable career paths. The careers should be relevant to the Indian job market context, but do not have to be strictly limited to India — include global roles if they align well with the user's interests.
+
+Your response must be a single valid JSON object. Do NOT include any markdown formatting (like ```json or ```), and do NOT add any commentary before or after the JSON.
+
+Strict Output Format (Use double quotes for all strings and keys):
+
+{
+  "interests": [list of inferred interests as strings],
+  "career_suggestions": [list of suggested careers as distinct strings — each must be a unique, well-defined career (no slashes or compound titles)],
+  "mapped_interest_to_careers": {
+    "interest_1": ["career_1", "career_2"],
+    "interest_2": ["career_3"]
+    // ... more mappings
+  },
+  "career_justifications": {
+    "career_1": "Brief explanation of why this career fits based on inferred interests and traits.",
+    "career_2": "Another explanation."
+    // ... more justifications
+  },
+  "interest_traits": {
+    "interest_1": ["trait_1", "trait_2"],
+    "interest_2": ["trait_3"]
+    // ... more trait mappings
+  },
+  "confidence_scores": {
+    "career_1": 0.85,
+    "career_2": 0.78
+    // ... more confidence scores (range: 0.0 - 1.0)
+  }
+}
+
+Additional Guidelines:
+1. Base your analysis only on the YouTube video titles and descriptions above.
+2. Do not use slashes ("/") in career names. If two closely related careers apply, list them separately.
+   ✅ Example: Use "Political Analyst" and "Policy Advisor" as separate entries.
+3. Output must be strict JSON using double quotes only — no markdown wrappers, no headings, no extra text.
+4. All keys must appear even if some arrays are empty.
+
+IMPORTANT: Do NOT add any explanatory text before or after the JSON. Only output the raw JSON object in valid format.

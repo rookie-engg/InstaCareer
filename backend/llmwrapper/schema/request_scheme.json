@@ -1,0 +1,41 @@
+{
+  "$defs": {
+    "YouTubeActivity": {
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "titleUrl": {
+          "title": "Titleurl",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "titleUrl"
+      ],
+      "title": "YouTubeActivity",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "activities": {
+      "items": {
+        "$ref": "#/$defs/YouTubeActivity"
+      },
+      "title": "Activities",
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "activities"
+  ],
+  "title": "Task",
+  "type": "object"
+}

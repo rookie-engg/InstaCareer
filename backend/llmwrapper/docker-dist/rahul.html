@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SocketIO Task Sender</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        #loadingSpinner {
+            display: none;
+        }
+
+        .json-pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .video-entry {
+            margin-bottom: 20px;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .description-section {
+            margin-top: 10px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">SocketIO Task Sender</h1>
+        <button onclick="invoke()" class="btn btn-primary">Send</button>
+
+        <div id="loadingSpinner" class="text-center mt-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Processing...</span>
+            </div>
+            <p class="mt-2">Processing... please wait</p>
+        </div>
+
+        <div id="timing" class="text-muted mt-3"></div>
+        <div id="responseContainer" class="mt-4"></div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        const socket = io("http://localhost:8080"); // Adjust if hosted elsewhere
+        const loadingSpinner = document.getElementById("loadingSpinner");
+        const responseContainer = document.getElementById("responseContainer");
+        const timingDiv = document.getElementById("timing");
+        let startTime = 0;
+
+        socket.on("connect", () => {
+            console.log('Connection established');
+        });
+
+        function invoke() {
+            console.log("Connected to Flask-SocketIO server");
+
+            const task = {
+                id: "task-12345",
+                activities: [
+                    {
+                        "title": "Watched Mentos Pure Fresh",
+                        "titleUrl": "https://www.youtube.com/watch?v=6uboTUUMVUM"
+                    },
+                    {
+                        "title": "Watched Inheritance | Official Trailer (HD) | Vertical Entertainment",
+                        "titleUrl": "https://www.youtube.com/watch?v=3q7JOLZxjqY"
+                    },
+                    {
+                        "title": "Watched Speedy Gonzales Best Moments",
+                        "titleUrl": "https://www.youtube.com/watch?v=5bmiDLH5htU"
+                    },
+                    {
+                        "title": "Watched | How to print your own faces on a classmate notebook | | Customised classmate notebook Cover |",
+                        "titleUrl": "https://www.youtube.com/watch?v=zRgJplEpvbA"
+                    },
+                    {
+                        "title": "Watched 250 ml Sting®. Fully Electric! | TVC | 20 sec",
+                        "titleUrl": "https://www.youtube.com/watch?v=NvNb4MjA_zE"
+                    },
+                    {
+                        "title": "Watched [Multi SUB] （全集）結婚當天，美女老婆為了心機白月光當場拋棄他離開，這次他決定離開讓她後悔終身！#都市 #逆袭 #最火短剧推荐 #MiniDrama #精彩大陆短剧",
+                        "titleUrl": "https://www.youtube.com/watch?v=70KD9C25JQ0"
+                    },
+                    {
+                        "title": "Watched 【FULL】She Broke Off Her Engagement for Her First Love… Now She Regrets It! #Minidrama",
+                        "titleUrl": "https://www.youtube.com/watch?v=4zW3-Op67vI"
+                    },
+                    {
+                        "title": "Watched 【FULL】Don't Cry When I Move On！ #Minidrama",
+                        "titleUrl": "https://www.youtube.com/watch?v=y0kO5NVqyPo"
+                    },
+                    {
+                        "title": "Watched Transform as Fan-Favorite Super Heroes on board Disney Adventure",
+                        "titleUrl": "https://www.youtube.com/watch?v=cCi_zoKsrnI"
+                    },
+                    {
+                        "title": "Watched 30 Million Subscriber MIX | NCS - Copyright Free Music",
+                        "titleUrl": "https://www.youtube.com/watch?v=JNl1_hRwpXE"
+                    },
+                    {
+                        "title": "Watched Aaron Smith - Dancin - Krono Remix (Official Video) ft. Luvli",
+                        "titleUrl": "https://www.youtube.com/watch?v=6Nb-prB-4P0"
+                    },
+                    {
+                        "title": "Watched KORDHELL - MURDER IN MY MIND",
+                        "titleUrl": "https://www.youtube.com/watch?v=w-sQRS-Lc9k"
+                    },
+                    {
+                        "title": "Watched ഇതാണ് മക്കളെ അഭിനയം❤️🥲| Kakkakuyil | Mohanlal | Mukesh | Jagathy Sreekumar #comedyscenes",
+                        "titleUrl": "https://www.youtube.com/watch?v=UOiCbzfEU0Q"
+                    },
+                    {
+                        "title": "Watched NO GAME NO LIFE:SORA VS STEPHANI DOLA(ROCK PAPER SCISSORS)",
+                        "titleUrl": "https://www.youtube.com/watch?v=CEiTpqSCsN4"
+                    },
+                    {
+                        "title": "Watched This Game - OP Full - No Game No Life by Konomi Suzuki (Lyrics)",
+                        "titleUrl": "https://www.youtube.com/watch?v=4a8XOwRzJC4"
+                    },
+                    {
+                        "title": "Watched Marvel Studios' Thunderbolts* | Official Trailer | In Cinemas May 1",
+                        "titleUrl": "https://www.youtube.com/watch?v=Oe61Le-kmow"
+                    },
+                    {
+                        "title": "Watched #MotorolaEdge60STYLUS| Segment 1st Built-in Stylus| 50MP Sony LYT 700C | Launch- 15 Apr on @flipkart",
+                        "titleUrl": "https://www.youtube.com/watch?v=alQyMu56bHo"
+                    },
+                    {
+                        "title": "Watched Tokyo ghoul (oshiete oshiete yo soho shikumi wo)",
+                        "titleUrl": "https://www.youtube.com/watch?v=990MSUdgUPI"
+                    },
+                    {
+                        "title": "Watched Phonk Music Mix 2025 ※ 1 HOUR AGGRESSIVE PHONK PLAYLIST ※ Фонка 2025",
+                        "titleUrl": "https://www.youtube.com/watch?v=_xUxFLEP6gc"
+                    }
+                ]
+            };
+            responseContainer.innerHTML = "";
+            timingDiv.innerText = "";
+            loadingSpinner.style.display = "block";
+            startTime = performance.now();
+
+            socket.emit("put-into-task-queue", JSON.stringify(task));
+            console.log("Sent task to server:", task);
+        }
+
+        socket.on("get-response", (data) => {
+            loadingSpinner.style.display = "none";
+            const endTime = performance.now();
+            const duration = ((endTime - startTime) / 1000).toFixed(2);
+            timingDiv.innerText = `Response received in ${duration} seconds`;
+
+            try {
+                const parsedData = typeof data === "string" ? JSON.parse(data) : data;
+                console.log(parsedData);
+                window.parsedData = parsedData;
+
+                const card = document.createElement("div");
+                card.className = "card";
+
+                const cardBody = document.createElement("div");
+                cardBody.className = "card-body";
+
+                // Display raw descriptions
+                if (parsedData.raw_descriptions && Array.isArray(parsedData.raw_descriptions)) {
+                    const rawHeader = document.createElement("h3");
+                    rawHeader.textContent = "Raw Descriptions";
+                    rawHeader.className = "mt-4";
+                    cardBody.appendChild(rawHeader);
+
+                    parsedData.raw_descriptions.forEach((entry) => {
+                        const entryDiv = document.createElement("div");
+                        entryDiv.className = "video-entry";
+
+                        const title = document.createElement("div");
+                        title.className = "video-title";
+                        title.textContent = entry.title || "No title available";
+                        entryDiv.appendChild(title);
+
+                        const url = document.createElement("div");
+                        url.innerHTML = `<a href="${entry.titleUrl}" target="_blank">${entry.titleUrl}</a>`;
+                        entryDiv.appendChild(url);
+
+                        if (entry.error) {
+                            const error = document.createElement("div");
+                            error.className = "error-message";
+                            error.textContent = `Error: ${entry.error}`;
+                            entryDiv.appendChild(error);
+                        } else {
+                            const description = document.createElement("div");
+                            description.className = "description-section";
+                            description.textContent = entry.description || "No description available";
+                            entryDiv.appendChild(description);
+                        }
+
+                        cardBody.appendChild(entryDiv);
+                    });
+                }
+
+                // Display cleaned descriptions
+                if (parsedData.cleaned_descriptions && Array.isArray(parsedData.cleaned_descriptions)) {
+                    const cleanedHeader = document.createElement("h3");
+                    cleanedHeader.textContent = "Cleaned Descriptions";
+                    cleanedHeader.className = "mt-4";
+                    cardBody.appendChild(cleanedHeader);
+
+                    parsedData.cleaned_descriptions.forEach((entry) => {
+                        const entryDiv = document.createElement("div");
+                        entryDiv.className = "video-entry";
+
+                        const title = document.createElement("div");
+                        title.className = "video-title";
+                        title.textContent = entry.title || "No title available";
+                        entryDiv.appendChild(title);
+
+                        const url = document.createElement("div");
+                        url.innerHTML = `<a href="${entry.titleUrl}" target="_blank">${entry.titleUrl}</a>`;
+                        entryDiv.appendChild(url);
+
+                        const description = document.createElement("div");
+                        description.className = "description-section";
+                        description.textContent = entry.description || "No description available";
+                        entryDiv.appendChild(description);
+
+                        cardBody.appendChild(entryDiv);
+                    });
+                }
+
+                // Display model prompt
+                if (parsedData.model_promt) {
+                    const promptHeader = document.createElement("h3");
+                    promptHeader.textContent = "Model Prompt";
+                    promptHeader.className = "mt-4";
+                    cardBody.appendChild(promptHeader);
+
+                    const promptPre = document.createElement("pre");
+                    promptPre.className = "json-pre";
+                    promptPre.textContent = parsedData.model_promt;
+                    cardBody.appendChild(promptPre);
+                }
+
+                // Display model response
+                if (parsedData.model_res) {
+                    const resHeader = document.createElement("h3");
+                    resHeader.textContent = "Model Response";
+                    resHeader.className = "mt-4";
+                    cardBody.appendChild(resHeader);
+
+                    const resPre = document.createElement("pre");
+                    resPre.className = "json-pre";
+                    resPre.textContent = JSON.stringify(JSON.parse(parsedData.model_res), null, 2);
+                    cardBody.appendChild(resPre);
+                }
+
+                const copyBtn = document.createElement("button");
+                copyBtn.className = "btn btn-sm btn-outline-secondary mt-2";
+                copyBtn.textContent = "Copy Full Response to Clipboard";
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(JSON.stringify(parsedData, null, 2))
+                        .then(() => alert("Copied to clipboard!"))
+                        .catch(() => alert("Failed to copy."));
+                };
+
+                cardBody.appendChild(copyBtn);
+                card.appendChild(cardBody);
+                responseContainer.appendChild(card);
+            } catch (err) {
+                responseContainer.innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Error parsing response:</strong> ${err.message}
+                    </div>
+                `;
+            }
+        });
+
+        socket.on("disconnect", () => {
+            console.log("Disconnected from server");
+        });
+
+        socket.on("connect_error", (err) => {
+            loadingSpinner.style.display = "none";
+            responseContainer.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    <strong>Connection Error:</strong> ${err.message}
+                </div>
+            `;
+        });
+    </script>
+</body>
+
+</html>

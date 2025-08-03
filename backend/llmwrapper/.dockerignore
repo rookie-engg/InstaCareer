@@ -1,0 +1,7 @@
+**/__pycache__
+**/.gitignore
+.git
+.keys
+.env
+**test**
+**/*.pyc

@@ -1,0 +1,32 @@
+Based on the career titles listed above, return a detailed and structured guide for each career path in the Indian job market context (but global references are welcome if relevant).
+
+Return a single valid JSON object with the following structure and formatting guidelines:
+
+Strict Output Format:
+{
+  "career_name_1": {
+    "summary": "What this career is about in 1-2 lines.",
+    "job_market": "Demand level in India, e.g., High / Medium / Niche",
+    "degrees": {
+      "bachelor": [list of relevant bachelor's degrees],
+      "master": [list of relevant master's degrees or higher (optional)]
+    },
+    "certifications": [list of useful certifications],
+    "skills": [list of essential skills],
+    "experience_path": "Short paragraph outlining typical experience journey (e.g., internships, junior roles, years)",
+    "entry_roles": [list of common entry-level job titles],
+    "salary_range_inr": "Estimated entry-level salary in INR per annum",
+    "learning_resources": [list of useful platforms or sites (with optional URLs)]
+  },
+  "career_name_2": {
+    // same structure
+  }
+  // ... more careers
+}
+
+Formatting Instructions:
+1. All keys and strings must use double quotes only.
+2. Output a valid JSON object — no markdown formatting or extra text.
+3. Each career_name key must be the exact string from the provided list.
+4. Be concise but informative and do not include any date year as the info may be outdated.
+5. All sections must appear, even if some arrays are empty.

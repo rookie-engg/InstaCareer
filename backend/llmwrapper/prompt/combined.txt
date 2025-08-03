@@ -1,0 +1,47 @@
+Based on the YouTube watch history provided above, analyze the user's interests and suggest the most suitable career paths. The careers should be relevant to the Indian job market context, but global roles may be included if they align well with the user's interests.
+Then, for each suggested career, provide a structured and detailed guide about that career path in the Indian context (with global references if relevant). Include the justification and a confidence score for each career within the same career object.
+
+Your response must be a single valid JSON object. Do NOT include any markdown formatting (like json or ), and do NOT add any commentary before or after the JSON.
+
+Strict Output Format (Use double quotes for all strings and keys):
+{
+  "interests": [list of inferred interests as strings],
+  "career_suggestions": [list of suggested careers as distinct strings — each must be a unique, well-defined career (no slashes or compound titles)],
+  "mapped_interest_to_careers": {
+    "interest_1": ["career_1", "career_2"],
+    "interest_2": ["career_3"]
+  },
+  "interest_traits": {
+    "interest_1": ["trait_1", "trait_2"],
+    "interest_2": ["trait_3"]
+  },
+  "careers": {
+    "career_1": {
+      "justification": "Brief explanation of why this career fits based on inferred interests and traits.",
+      "confidence_score": 0.85,
+      "summary": "What this career is about in 1-2 lines.",
+      "job_market": "Demand level in India, e.g., High / Medium / Niche",
+      "degrees": {
+        "bachelor": [list of relevant bachelor's degrees],
+        "master": [list of relevant master's degrees or higher (optional)]
+      },
+      "certifications": [list of useful certifications],
+      "skills": [list of essential skills],
+      "experience_path": "Short paragraph outlining typical experience journey (e.g., internships, junior roles, years)",
+      "entry_roles": [list of common entry-level job titles],
+      "salary_range_inr": "Estimated entry-level salary in INR per annum",
+      "learning_resources": [list of useful platforms or sites (with optional URLs)]
+    },
+    "career_2": {
+      // same structure
+    }
+  }
+}
+Additional Guidelines:
+
+1. Base your analysis strictly on the YouTube video titles and descriptions provided.
+2. Do not use slashes ("/") in career names. If two closely related careers apply, list them separately.
+✅ Example: Use "Political Analyst" and "Policy Advisor" as separate entries.
+3. Output must be strict JSON using double quotes only — no markdown wrappers, no headings, no extra text.
+4. All keys must appear even if some arrays are empty.
+5. Each key in the "careers" object must exactly match one from the "career_suggestions" array.
