@@ -80,7 +80,7 @@
 // }
 
 // export default PersonalityInterest;
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -176,6 +176,8 @@ const PersonalityInterest = () => {
   const [interestTraits, setInterestTraits] = useState(null);
   const [selfConcept, setSelfConcept] = useState(null);
   const [requestStatus, setRequestStatus] = useState(REQUEST_STATE.PENDING);
+  const timerRef = useRef(null); 
+
 
   useEffect(() => {
     function getRandomColor() {
@@ -254,46 +256,109 @@ const PersonalityInterest = () => {
       };
     }
 
-    const pollingRequestStatus = setInterval(() => {
-      fetch(`/icareer/api/profile/${correlatedId}`).then(async (res) => {
-        if (res.status === 404 || res.status === 400) {
-          setRequestStatus(REQUEST_STATE.NOTFOUND);
-          clearInterval(pollingRequestStatus);
-        }
+    //   const pollingRequestStatus = setInterval(() => {
+    //     fetch(`/icareer/api/profile/${correlatedId}`).then(async (res) => {
+    //       if (res.status === 404 || res.status === 400) {
+    //         setRequestStatus(REQUEST_STATE.NOTFOUND);
+    //         clearInterval(pollingRequestStatus);
+    //       }
 
-        if (res.status === 200) {
-          clearInterval(pollingRequestStatus);
+    //       if (res.status === 200) {
+    //         clearInterval(pollingRequestStatus);
+    //         setRequestStatus(REQUEST_STATE.COMPLETED);
+
+    //         let data = transformData(await res.json());
+
+    //         const { oceanTraits, coreValues, emotionalPatterns, interestTraits, selfConcept } = data;
+    //         setModelRes(data);
+    //         setOceanTraits(oceanTraits);
+    //         setCoreValues(coreValues);
+    //         setEmotionalPatterns(emotionalPatterns);
+    //         setInterestTraits(interestTraits);
+    //         setSelfConcept(selfConcept);
+    //         return;
+    //       }
+
+    //       if (res.status === 202) {
+    //         setRequestStatus(REQUEST_STATE.PENDING);
+    //         return;
+    //       }
+
+    //       if (res.status === 500) {
+    //         setRequestStatus(REQUEST_STATE.FAILED);
+    //         clearInterval(pollingRequestStatus);
+    //       }
+    //     });
+    //   }, 1000);
+
+    //   return () => {
+    //     clearInterval(pollingRequestStatus);
+    //   };
+
+    // }, [correlatedId]);
+
+
+
+    // A controller to abort the fetch request if the component unmounts
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const pollForStatus = async () => {
+      try {
+        const response = await fetch(`/icareer/api/profile/${correlatedId}`, { signal });
+
+        // Handle terminal success state
+        if (response.status === 200) {
           setRequestStatus(REQUEST_STATE.COMPLETED);
-
-          let data = transformData(await res.json());
-
+          const data = transformData(await response.json());
           const { oceanTraits, coreValues, emotionalPatterns, interestTraits, selfConcept } = data;
+
           setModelRes(data);
           setOceanTraits(oceanTraits);
           setCoreValues(coreValues);
           setEmotionalPatterns(emotionalPatterns);
           setInterestTraits(interestTraits);
           setSelfConcept(selfConcept);
-          return;
+          return; // Stop polling
         }
 
-        if (res.status === 202) {
+        // Handle pending state
+        if (response.status === 202) {
           setRequestStatus(REQUEST_STATE.PENDING);
+          // Wait 1 second and poll again
+          timerRef.current = setTimeout(pollForStatus, 4000);
           return;
         }
 
-        if (res.status === 500) {
+        // Handle terminal error states
+        if (response.status === 400 || response.status === 404) {
+          setRequestStatus(REQUEST_STATE.NOTFOUND);
+        } else if (response.status === 500) {
           setRequestStatus(REQUEST_STATE.FAILED);
-          clearInterval(pollingRequestStatus);
         }
-      });
-    }, 1000);
+        // Stop polling on client or server errors
 
-    return () => {
-      clearInterval(pollingRequestStatus);
+      } catch (error) {
+        // Avoid setting state if the error is due to component unmounting
+        if (error.name !== 'AbortError') {
+          console.error("Polling request failed:", error);
+          setRequestStatus(REQUEST_STATE.FAILED);
+        }
+      }
     };
 
-  }, [correlatedId]);
+    // Start the initial poll
+    pollForStatus();
+
+    // Cleanup function to run when the component unmounts
+    return () => {
+      controller.abort(); // Abort any in-flight fetch request
+      if (timerRef.current) {
+        clearTimeout(timerRef.current); // Clear any scheduled timeout
+      }
+    };
+
+  }, [correlatedId]); 
 
 
   const cx = 200, cy = 200, radius = 150;
