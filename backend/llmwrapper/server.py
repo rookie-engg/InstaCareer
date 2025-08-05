@@ -90,6 +90,8 @@ def task_result_dispatcher(q: Queue[TaskResult]) -> None:
         print("Fatal error in task_result_dispatcher")
         quit_event.set()
 
+from pprint import pprint
+
 def task_result_kafka_producer(
         q: Queue[TaskResult], 
         producer: kafka.KafkaProducer,
@@ -101,7 +103,7 @@ def task_result_kafka_producer(
             val = q.get(timeout=1)
             print("Sending task result to kafka queue: \n")
             print('-'*10)
-            print(val)
+            print(val['model_res'])
             print('-'*10)
             producer.send(reply_topic, value=val)
         except Empty:
