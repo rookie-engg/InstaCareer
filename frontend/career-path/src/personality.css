@@ -1,27 +1,196 @@
+/* .personality { */
 
+/* } */
+
+/* Outer container */
 .outer {
-  width: 100%;
-  min-height: 100vh;
-   /* background: linear-gradient(to right, #eeedf0, #d5dffd); */
-   padding: 2rem;
-}
-#heading{
+    width: 100%;
+    min-height: 100vh;
     padding: 2rem;
-    font-family:'Times New Roman', Times, serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url("/public/images/careeBack3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
 }
-.Interest-Traits{
-    background-color: white;
-    margin-left: 4rem;
-    margin-right: 4rem;
-    padding: 1rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+/* Heading Section */
+#heading {
+    padding: 2rem;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
 }
-.Core-Values {
-    background-color: white;
+
+#heading h1 {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#heading h5 {
+    color: #ffffff;
+    font-style: italic;
+}
+
+/* pageHeading animation */
+@keyframes fadeSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pageHeading {
+    animation: fadeSlide 1s ease-out forwards;
+}
+
+/* pageHeading2 + Logo animation */
+@keyframes fadeScale {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.pageHeading2,
+.logo {
+    animation: fadeScale 1s ease-out 0.3s forwards;
+    /* 0.3s delay after h1 */
+}
+
+/* Card container sections */
+@keyframes cardFadeSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.Cards {
+    background-color: #ffffff;
     margin: 2rem 4rem;
-    padding: 1rem;
-    
+    padding: 1.5rem;
     border-radius: 1rem;
-    box-shadow:0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(6px);
+    transition: 0.3s ease-in-out;
+    font-family: 'Times New Roman', Times, serif;
+
+    /* Hidden initially for scroll animation */
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.Cards.show {
+    animation: cardFadeSlide 0.8s ease-out forwards;
+}
+
+/* Subtle hover lift */
+.Cards:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Core Value Cards inside flex */
+.Cards .rounded {
+    box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.2),
+        0 0 10px rgba(0, 0, 0, 0.15);
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 16px;
+}
+
+/* Glow on hover with matching color */
+.Cards .rounded:hover {
+    transform: scale(1.08);
+    box-shadow:
+        0 0 25px var(--glow-color, rgba(0, 0, 0, 0.3)),
+        0 0 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Progress bar styling */
+.progress {
+    height: 20px;
+    border-radius: 10px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 10px;
+    font-weight: bold;
+    transition: width 0.6s ease;
+}
+
+/* Self-concept circular score */
+.card .rounded-circle {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.card .rounded-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #0dcaf0;
+}
+
+/* OCEAN cards */
+.card.shadow-sm {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.card.shadow-sm:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* OCEAN Section Fade + Slide */
+@keyframes sectionFadeSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.Cards {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.3s ease-in-out;
+}
+
+.Cards.show {
+    animation: sectionFadeSlide 0.8s ease-out forwards;
+}
+
+/* Individual card stagger effect */
+.card.shadow-sm {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.card.shadow-sm.show {
+    opacity: 1;
+    transform: translateY(0);
 }

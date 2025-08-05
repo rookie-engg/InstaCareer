@@ -2,12 +2,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../components/css/style.css';
+import { useAuth } from '../components/AuthContext';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("sahushivam1504@gmail.com");
+  const [password, setPassword] = useState("asbkasAIUDIkans@23");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const { token, setToken } = useAuth();
 
   const validateForm = () => {
     const newErrors = {};
@@ -39,7 +41,8 @@ const Login = () => {
         const res = await fetch('/icareer/login', {
           method: 'POST',
           headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            // 'Authorization': `Bearer ${token}`,
           },
           body: JSON.stringify({
             'email': email,
@@ -48,10 +51,21 @@ const Login = () => {
         });
 
         if (res.ok) {
-          navigate('/upload');
-          return
+          // const id = await res.text();
+          // if (id != '' || id != 'Login Failed')
+          // navigate(`/upload/${id}`);
+          // else
+          // throw new Error("login failed");
+          const { id, token, role } = await res.json();
+          setToken(token);
+          if (role == 'ADMIN') {
+            navigate('/admin');
+            return;
+          }
+          navigate(`/upload/${id}`);
+        } else {
+          alert("Invalid User");
         }
-
       } catch (e) {
         alert(e)
       }
@@ -87,6 +101,7 @@ const Login = () => {
                     id="email"
                     placeholder="Email"
                     value={email}
+                    defaultValue={"sahushivam1504@gmail.com"}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                   {errors.email && <small className="text-danger">{errors.email}</small>}
@@ -99,6 +114,7 @@ const Login = () => {
                     id="password"
                     placeholder="Password"
                     value={password}
+                    defaultValue={"asbkasAIUDIkans@23"}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   {errors.password && <small className="text-danger">{errors.password}</small>}

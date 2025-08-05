@@ -17,6 +17,12 @@
   
   min-height: 100vh;   /* ✅ allows content to grow beyond one screen */
   padding-bottom: 50px; /* optional: adds spacing from bottom */
+
+}
+
+.prev-button {
+  background: linear-gradient(#42B4DB, #2193b0);
+  width: 18rem;
 }
 
 .outerContainer {

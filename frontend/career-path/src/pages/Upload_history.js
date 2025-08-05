@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import '../components/css/history.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../components/AuthContext';
 
 const Upload_history = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
-  const navigator = useNavigate();
+  const navigate = useNavigate();
+  const { userid } = useParams();
+  const { token, setToken } = useAuth();
 
   const handleFileChange = async (event) => {
     const selectedFile = event.target.files[0];
@@ -52,9 +55,12 @@ const Upload_history = () => {
 
     try {
       const response = await fetch('/icareer/api/files/uploadZip', {
-      // const response = await fetch('/api/files/uploadZip', {
+        // const response = await fetch('/api/files/uploadZip', {
         method: 'POST',
         body: formData,
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
         // 🚫 Don't set Content-Type — browser handles it
       });
 
@@ -62,7 +68,7 @@ const Upload_history = () => {
         const id = await response.text();
         setMessage(`✅ correlatedid ${id}`);
         setFile(null);
-        await navigator(`/dashboard/${id}`);
+        await navigate(`/dashboard/${userid}/${id}`);
       } else {
         const errorText = await response.text();
         setMessage(`❌ ${errorText}`);
@@ -98,6 +104,16 @@ const Upload_history = () => {
             <center>{message && <p style={{ color: message.includes('✅') ? 'green' : 'red' }}>{message}</p>}</center>
           </form>
         </div>
+      </div>
+
+      {/* ✅ Prev History Button */}
+      <div className="p-4 d-flex justify-content-center">
+        <button
+          className="btn prev-button text-white shadow rounded-3"
+          onClick={() => navigate(`/prev-history/${userid}`)}
+        >
+          Prev History
+        </button>
       </div>
 
       <div className='Instruction'>

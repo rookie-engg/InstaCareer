@@ -177,6 +177,7 @@ const PersonalityInterest = () => {
   const [selfConcept, setSelfConcept] = useState(null);
   const [requestStatus, setRequestStatus] = useState(REQUEST_STATE.PENDING);
   const timerRef = useRef(null);
+  const { token, setToken } = useAuth();
 
 
   useEffect(() => {
@@ -305,7 +306,11 @@ const PersonalityInterest = () => {
 
     const pollForStatus = async () => {
       try {
-        const response = await fetch(`/icareer/api/profile/${correlatedId}`, { signal });
+        const response = await fetch(`/icareer/api/profile/${correlatedId}`, {
+          signal, headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
         // Handle terminal success state
         if (response.status === 200) {
