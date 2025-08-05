@@ -7,17 +7,17 @@ import HeroSection from '../components/HeroSection.js';
 import Navbar from '../components/Navbar.js';
 import Testimonials from '../components/Testimonials.js';
 
-export default function LandingPage(){
-    return(
+export default function LandingPage() {
+    return (
         <>
-        <Navbar />
-        <HeroSection />
-        <FeaturesSection />
-        <HowItWorksCarousel />
-        <Testimonials />
-        <AboutUs />
-        <ContactUs />
-        <Footer />
+            <Navbar />
+            <HeroSection />
+            <FeaturesSection />
+            <HowItWorksCarousel />
+            <Testimonials />
+            <AboutUs />
+            <ContactUs />
+            <Footer />
         </>
     );
 }

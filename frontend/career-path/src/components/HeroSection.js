@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import './css/HeroSection.css';
 
 const HeroSection = () => {
+  const navigator = useNavigate();
+
   return (
     <>
     <section id = "heroSection">
@@ -12,7 +15,7 @@ const HeroSection = () => {
           <p className="lead fs-3 fw-semibold gradient-text hero-subheading animate-slide-right">
             Analyze your Interests. Unlock your dream career.
           </p>
-          <button className="btn btn-primary btn-lg mt-3 gradient-button animate-slide-left">
+          <button className="btn btn-primary btn-lg mt-3 gradient-button animate-slide-left" onClick={() => navigator('/login')}>
             Get Started
           </button>
         </div>

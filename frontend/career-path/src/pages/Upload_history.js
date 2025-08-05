@@ -52,6 +52,7 @@ const Upload_history = () => {
 
     try {
       const response = await fetch('/icareer/api/files/uploadZip', {
+      // const response = await fetch('/api/files/uploadZip', {
         method: 'POST',
         body: formData,
         // 🚫 Don't set Content-Type — browser handles it
