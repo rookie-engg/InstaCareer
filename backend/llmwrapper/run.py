@@ -17,7 +17,8 @@ REQUIRED_NLTK_PACKAGES = [
     'punkt',
     'wordnet',
     'stopwords',
-    'omw-1.4'
+    'omw-1.4',
+    'punkt_tab'
 ]
 
 # The name of your main server file to run after checks are complete.

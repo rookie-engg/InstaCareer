@@ -1,6 +1,24 @@
 from typing import Dict, List
 from pymongo import MongoClient, UpdateOne
 from youtube.youtube_types import VideoDescription
+import re
+
+# --- FIX: Added the URL normalization function ---
+def normalize_youtube_url(url: str) -> str | None:
+    """Extracts the video ID and returns a canonical YouTube URL."""
+    if not url:
+        return None
+    
+    # Regex to find the 11-character video ID from various URL formats
+    match = re.search(r"(?:v=|\/|youtu\.be\/)([0-9A-Za-z_-]{11})", url)
+    
+    if match:
+        video_id = match.group(1)
+        # Return a single, consistent format to be used as the key
+        return f"https://www.youtube.com/watch?v={video_id}"
+        
+    # Return None if no valid YouTube video ID is found in the URL
+    return None
 
 class Database():
 
@@ -17,9 +35,7 @@ class Database():
         self._URL_KEY = 'titleUrl'
         self._DESCRIPTION_KEY = 'description'
 
-        # --- MODIFICATION START ---
         # Construct a standard MongoDB connection string URI
-        # This is the recommended way to connect.
         connection_uri = (
             f"mongodb://{self._DATABASE_USERNAME}:{self._DATABASE_PASSWORD}@"
             f"{self._DATABASE_HOST}:{self._DATABASE_PORT}/"
@@ -28,63 +44,90 @@ class Database():
 
         # Connect using the URI
         self._client = MongoClient(connection_uri)
-        # --- MODIFICATION END ---
         
         self._database = self._client.get_database(name=self._DATABASE_NAME)
         self._raw_description_collection = self._database.get_collection(name=self._RAW_COLLECTION_NAME)
         self._processed_description_collection = self._database.get_collection(name=self._PROCESSED_COLLECTION_NAME)
 
         # Create unique index on titleUrl to prevent duplicates
-        # It's good practice to wrap this in a try-except block in case of connection issues
         try:
             self._raw_description_collection.create_index(self._URL_KEY, unique=True)
             self._processed_description_collection.create_index(self._URL_KEY, unique=True)
             print("✅ Successfully connected to database and ensured indexes.")
         except Exception as e:
             print(f"❌ Could not connect to MongoDB or create indexes. Error: {e}")
-            # Depending on your application's needs, you might want to exit or raise the exception
             raise e
 
     def get_raw_youtube_description(self, url: str) -> VideoDescription | None:
-        return self._raw_description_collection.find_one({self._URL_KEY: url}, {'_id': 0})
+        # Normalize URL before querying
+        normalized_url = normalize_youtube_url(url)
+        if not normalized_url:
+            return None
+        return self._raw_description_collection.find_one({self._URL_KEY: normalized_url}, {'_id': 0})
 
     def get_preprocessed_youtube_description(self, url: str) -> VideoDescription | None:
-        return self._processed_description_collection.find_one({self._URL_KEY: url}, {'_id': 0})
+        # Normalize URL before querying
+        normalized_url = normalize_youtube_url(url)
+        if not normalized_url:
+            return None
+        return self._processed_description_collection.find_one({self._URL_KEY: normalized_url}, {'_id': 0})
 
     def save_in_raw_youtube_description(self, data):
+        # Normalize URL before saving
+        normalized_url = normalize_youtube_url(data[self._URL_KEY])
+        if not normalized_url:
+            return
+        data[self._URL_KEY] = normalized_url
         self._raw_description_collection.update_one(
-            {self._URL_KEY: data[self._URL_KEY]},
+            {self._URL_KEY: normalized_url},
             {'$set': data},
             upsert=True
         )
 
     def save_in_processed_youtube_description(self, data):
+        # Normalize URL before saving
+        normalized_url = normalize_youtube_url(data[self._URL_KEY])
+        if not normalized_url:
+            return
+        data[self._URL_KEY] = normalized_url
         self._processed_description_collection.update_one(
-            {self._URL_KEY: data[self._URL_KEY]},
+            {self._URL_KEY: normalized_url},
             {'$set': data},
             upsert=True
         )
 
     def save_in_raw_youtube_description_bulk(self, descs: List[VideoDescription]):
         if not descs: return
-        operations = [
-            UpdateOne(
-                {self._URL_KEY: desc[self._URL_KEY]},
-                {'$set': desc},
-                upsert=True
-            )
-            for desc in descs
-        ]
-        self._raw_description_collection.bulk_write(operations)
+        operations = []
+        for desc in descs:
+            # Normalize URL for each item before creating the update operation
+            normalized_url = normalize_youtube_url(desc.get(self._URL_KEY))
+            if normalized_url:
+                desc[self._URL_KEY] = normalized_url
+                operations.append(
+                    UpdateOne(
+                        {self._URL_KEY: normalized_url},
+                        {'$set': desc},
+                        upsert=True
+                    )
+                )
+        if operations:
+            self._raw_description_collection.bulk_write(operations)
 
     def save_in_processed_youtube_description_bulk(self, descs: List[VideoDescription]):
         if not descs: return
-        operations = [
-            UpdateOne(
-                {self._URL_KEY: desc[self._URL_KEY]},
-                {'$set': desc},
-                upsert=True
-            )
-            for desc in descs
-        ]
-        self._processed_description_collection.bulk_write(operations)
+        operations = []
+        for desc in descs:
+            # Normalize URL for each item before creating the update operation
+            normalized_url = normalize_youtube_url(desc.get(self._URL_KEY))
+            if normalized_url:
+                desc[self._URL_KEY] = normalized_url
+                operations.append(
+                    UpdateOne(
+                        {self._URL_KEY: normalized_url},
+                        {'$set': desc},
+                        upsert=True
+                    )
+                )
+        if operations:
+            self._processed_description_collection.bulk_write(operations)

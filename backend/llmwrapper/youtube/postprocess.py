@@ -9,12 +9,13 @@ from langdetect import detect, DetectorFactory
 from youtube.youtube_types import VideoDescription
 from torch.cuda import is_available as cuda_is_available
 
-# # --- Initialize NLTK ---
-# import nltk
-# nltk.download('punkt')
-# nltk.download('wordnet')
-# nltk.download('stopwords')
-# nltk.download('omw-1.4')
+# --- Initialize NLTK ---
+import nltk
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('stopwords')
+nltk.download('omw-1.4')
+nltk.download('punkt_tab')
 
 stop_words = set(stopwords.words('english'))
 lemmatizer = WordNetLemmatizer()
