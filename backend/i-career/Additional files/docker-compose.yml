@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka-broker
+    ports:
+      # Exposes the Kafka broker port to the host machine, making it accessible
+      # from other machines on the same network.
+      - '9092:9092'
+    environment:
+      # --- KRaft settings (replaces ZooKeeper) ---
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+
+      # --- Listener configuration for internal and external access ---
+      # Defines the listeners the broker will use.
+      # PLAINTEXT is for client connections.
+      # CONTROLLER is for internal KRaft protocol communication.
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      
+      # This advertises the broker's address to external clients.
+      # Replace '192.168.1.88' if your Machine A's IP address changes.
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://192.168.1.88:9092
+
+      # --- Allow plaintext connections (for development) ---
+      # This is required to allow non-authenticated, non-encrypted connections.
+      # Not recommended for production environments.
+      - ALLOW_PLAINTEXT_LISTENER=yes

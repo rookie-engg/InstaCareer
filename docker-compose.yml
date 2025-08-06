@@ -1,0 +1,137 @@
+services:
+  # --- Database Services ---
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-database
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: instacareer
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo-database
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- Core Infrastructure ---
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: kafka-broker
+    ports:
+      - '9092:9092'
+    volumes:
+      - kafka_data:/bitnami/kafka
+    environment:
+      # --- KRaft settings ---
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - ALLOW_PLAINTEXT_LISTENER=yes
+
+      # ✅ CORRECTED: Listener configuration for inter-container communication
+      # Maps the listener names to security protocols.
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      # Defines the listeners the broker will use. PLAINTEXT listens on all interfaces inside the container.
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      # Advertises the broker's address to other containers using the service name 'kafka'.
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions.sh --bootstrap-server localhost:9092"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+
+  ollama:
+    build:
+      context: ./ollama_custom
+      dockerfile: ../Dockerfile.ollama
+    container_name: ollama-service
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  # --- Application Services ---
+  icareer-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.java
+    container_name: icareer-spring-boot-app
+    ports:
+      - "80:8080"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/instacareer?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - JWT_SECRET_KEY=e00b4814f7950871eeca508e4eb8cab7a06176018830c4f368cd33f4741eb2a9
+
+  llm-wrapper:
+    build:
+      context: backend/llmwrapper
+      dockerfile: ../../Dockerfile.python
+    container_name: llm-wrapper-python-app
+    ports:
+      - "8000:8000"
+    depends_on:
+      mongo-db:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    environment:
+      - MONGODB_URI=mongodb://root:root@mongo-db:27017/
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - OLLAMA_HOST=ollama
+      - OLLAMA_PORT=11434
+      - KAFKA_CONSUMER_TOPIC=youtube-request-activity
+      - KAFKA_REPLY_TOPIC=youtube-response-activity
+      - OLLAMA_MODEL=gemma3:1b
+      - DATABASE_HOST=mongo-db
+      - DATABASE_PORT=27017
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=cache
+      - DATABASE_AUTH_SOURCE=admin
+      - SERVER_HOST=localhost
+      - SERVER_PORT=8080
+      - KAFKA_SERVER=kafka:9092
+      - KAFKA_GROUP=user-group
+      - USE_YT_API=True
+
+
+# --- Volumes to persist data ---
+volumes:
+  mysql_data:
+  mongo_data:
+  ollama_data:
+  kafka_data:

@@ -1,0 +1,40 @@
+# --- General Exclusions ---
+.git
+.gitignore
+.gitattributes
+.idea/
+.vscode/
+*.log
+HELP.md
+struct.txt
+
+# --- Docker & Build Files ---
+Dockerfile*
+docker-compose.yml
+.dockerignore
+
+# --- Maven / Spring Boot Exclusions ---
+target/
+.mvn/
+mvnw
+mvnw.cmd
+.env
+
+# --- Node.js / React Frontend Exclusions ---
+frontend/career-path/node_modules/
+frontend/career-path/build/
+frontend/career-path/.pnp*
+frontend/career-path/coverage/
+npm-debug.log
+yarn-*.log
+
+# --- Python Exclusions (Corrected Path) ---
+# ✅ FIX: The ignore paths now correctly point to the llmwrapper's nested directory.
+backend/llmwrapper/__pycache__/
+backend/llmwrapper/*.pyc
+backend/llmwrapper/.pytest_cache/
+backend/llmwrapper/venv/
+backend/llmwrapper/.venv/
+
+# --- Other ---
+uploads/

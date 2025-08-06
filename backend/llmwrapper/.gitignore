@@ -5,6 +5,7 @@
 **/nltk_data
 ollama
 # **test**
+__*
 **/dist/
 dist.zip
 models

@@ -1,0 +1,19 @@
+######################################
+Git: 
+
+<type>: <short description>
+Optional longer explanation (if needed)
+
+eg : 
+feat: Add user profile update functionality
+Users can now edit their profile information, including name and email.
+
+feat: New feature
+fix: Bug fix
+refactor: Code restructuring/improvement
+docs: Documentation update
+test: Adding or updating tests
+chore: Maintenance tasks (e.g., dependency updates)
+style: Formatting changes (no code logic modifications)
+
+fix: Resolve checkout bug when cart is empty (#123)

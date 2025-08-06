@@ -93,6 +93,7 @@ def start_server():
         print("   Please ensure this script is in the same directory as your server file.")
         exit(1)
     except subprocess.CalledProcessError as e:
+        print(e)
         print(f"❌ The server '{SERVER_FILE}' exited with an error (code {e.returncode}).")
         exit(1)
 

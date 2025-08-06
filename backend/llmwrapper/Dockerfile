@@ -1,20 +1,20 @@
-# FROM python:3.11
-FROM pytorch/pytorch:2.7.0-cuda11.8-cudnn9-runtime
+FROM python:3.11-slim
 
-WORKDIR /usr/app
+# Set the working directory in the container
+WORKDIR /app
 
-COPY ./nltk_data /usr/share/nltk_data
-COPY ./db ./db
-COPY ./youtube ./youtube
-COPY ./ollama_llm.py ./project_types.py ./
-COPY ./server.py ./task.py ./
-COPY ./prompt ./prompt
-COPY ./requirements.txt ./
+# Copy the requirements file first to leverage Docker's layer caching.
+# This step is only re-run if requirements.txt changes.
+COPY requirements.txt .
 
-RUN python3 -m pip install -r requirements.txt
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-ENV NLTK_DATA=/usr/share/nltk_data \ 
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+# Copy the rest of the application's source code
+COPY . .
 
-CMD [ "python", "server.py"]
+# Your application runs on port 8000, so expose that port
+EXPOSE 8000
+
+# Run the application when the container launches
+CMD ["python", "run.py"]

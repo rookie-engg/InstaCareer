@@ -7,8 +7,10 @@ import logo from '../images/logo.png';
 import loginpage from '../images/loginpage.jpg';
 
 const Login = () => {
-  const [email, setEmail] = useState("sahushivam1504@gmail.com");
-  const [password, setPassword] = useState("asbkasAIUDIkans@23");
+  // const [email, setEmail] = useState("sahushivam1504@gmail.com");
+  const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("asbkasAIUDIkans@23");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { token, setToken } = useAuth();
@@ -103,7 +105,7 @@ const Login = () => {
                     id="email"
                     placeholder="Email"
                     value={email}
-                    defaultValue={"sahushivam1504@gmail.com"}
+                    // defaultValue={"sahushivam1504@gmail.com"}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                   {errors.email && <small className="text-danger">{errors.email}</small>}
@@ -116,7 +118,7 @@ const Login = () => {
                     id="password"
                     placeholder="Password"
                     value={password}
-                    defaultValue={"asbkasAIUDIkans@23"}
+                    // defaultValue={"asbkasAIUDIkans@23"}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   {errors.password && <small className="text-danger">{errors.password}</small>}

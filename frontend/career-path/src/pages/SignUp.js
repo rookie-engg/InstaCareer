@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../components/css/style.css';
 import logo from '../images/logo.png';
 import loginpage from '../images/loginpage.jpg';
+import { useAuth } from '../components/AuthContext';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +12,9 @@ const SignUp = () => {
     password: '',
     confirmPassword: ''
   });
-
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const { token, setToken } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,91 +50,116 @@ const SignUp = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      alert('Registration successful!');
       // Handle API call or redirection here
+      const { name, email, password } = formData;
+      try {
+
+        const res = await fetch('/icareer/register', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'content-type': 'application/json'
+          }
+        });
+        if (res.ok) {
+          // alert('Registration successful! login');
+          const { id, token, role } = await res.json();
+          setToken(token);
+          if (role == 'ADMIN') {
+            navigate('/admin');
+            return;
+          }
+          navigate(`/upload/${id}`);
+        } else {
+          alert('sign up failed');
+        }
+      } catch (err) {
+        alert('signup failed!');
+        console.error(err)
+      }
     }
   };
 
   return (
     <section id='signup'>
-    <div className="container">
-      <div className="row full-height align-items-center">
-        
-        {/* SignUp Section */}
-        <div className="col-md-6">
-          <div className="login_container">
-          <center><img src={logo} alt="Career Path Logo" width="50" height="50" /></center>
-            <h3 className="mb-4 mt-2 text-center">Sign Up</h3>
+      <div className="container">
+        <div className="row full-height align-items-center">
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control custom-input"
-                  placeholder="Name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-                {errors.name && <small className="text-danger">{errors.name}</small>}
-              </div>
+          {/* SignUp Section */}
+          <div className="col-md-6">
+            <div className="login_container">
+              <center><img src={logo} alt="Career Path Logo" width="50" height="50" /></center>
+              <h3 className="mb-4 mt-2 text-center">Sign Up</h3>
 
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control custom-input"
-                  placeholder="Email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-                {errors.email && <small className="text-danger">{errors.email}</small>}
-              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    className="form-control custom-input"
+                    placeholder="Name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                  {errors.name && <small className="text-danger">{errors.name}</small>}
+                </div>
 
-              <div className="mb-3">
-                <input
-                  type="password"
-                  className="form-control custom-input"
-                  placeholder="Password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                {errors.password && <small className="text-danger">{errors.password}</small>}
-              </div>
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    className="form-control custom-input"
+                    placeholder="Email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                  {errors.email && <small className="text-danger">{errors.email}</small>}
+                </div>
 
-              <div className="mb-3">
-                <input
-                  type="password"
-                  className="form-control custom-input"
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-                {errors.confirmPassword && <small className="text-danger">{errors.confirmPassword}</small>}
-              </div>
+                <div className="mb-3">
+                  <input
+                    type="password"
+                    className="form-control custom-input"
+                    placeholder="Password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                  {errors.password && <small className="text-danger">{errors.password}</small>}
+                </div>
 
-              <button type="submit" className="btn custom-btn w-100">Register</button>
+                <div className="mb-3">
+                  <input
+                    type="password"
+                    className="form-control custom-input"
+                    placeholder="Confirm Password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                  />
+                  {errors.confirmPassword && <small className="text-danger">{errors.confirmPassword}</small>}
+                </div>
 
-              <div className="text-center">
-                <p className="text-body-tertiary">Already have an account?
-                <Link to="/login" className='text-decoration-none'>Login</Link>
-                </p>
-              </div>
-            </form>
+                <button type="submit" className="btn custom-btn w-100">Register</button>
+
+                <div className="text-center">
+                  <p className="text-body-tertiary">Already have an account?
+                    <Link to="/login" className='text-decoration-none'>Login</Link>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* Image Section */}
+          <div className="col-md-6 image-container">
+            <img src={loginpage} alt="image not found..!!" />
           </div>
         </div>
-
-        {/* Image Section */}
-        <div className="col-md-6 image-container">
-          <img src={loginpage} alt="image not found..!!" />
-        </div>
       </div>
-    </div>
     </section>
   );
 };

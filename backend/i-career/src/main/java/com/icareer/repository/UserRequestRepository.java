@@ -1,0 +1,14 @@
+package com.icareer.repository;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.icareer.entity.UserRequest;
+
+@Repository
+public interface UserRequestRepository extends JpaRepository<UserRequest, UUID> {
+	List<UserRequest> findUserRequestsByUser_Id(UUID userId);
+}
