@@ -18,7 +18,7 @@ import { AlertProvider } from './admin/globals/AlertContext';
 
 function App() {
   return (
-    <Router>
+      <Router basename="/icareer">
       <Routes>
         {/* User-facing routes */}
         <Route path="/" element={<LandingPage />} />

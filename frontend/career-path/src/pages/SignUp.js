@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../components/css/style.css';
+import logo from '../images/logo.png';
+import loginpage from '../images/loginpage.jpg';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -62,7 +64,7 @@ const SignUp = () => {
         {/* SignUp Section */}
         <div className="col-md-6">
           <div className="login_container">
-          <center><img src="/images/logo.png" alt="Career Path Logo" width="50" height="50" /></center>
+          <center><img src={logo} alt="Career Path Logo" width="50" height="50" /></center>
             <h3 className="mb-4 mt-2 text-center">Sign Up</h3>
 
             <form onSubmit={handleSubmit}>
@@ -127,7 +129,7 @@ const SignUp = () => {
 
         {/* Image Section */}
         <div className="col-md-6 image-container">
-          <img src="/images/loginpage.jpg" alt="image not found..!!" />
+          <img src={loginpage} alt="image not found..!!" />
         </div>
       </div>
     </div>

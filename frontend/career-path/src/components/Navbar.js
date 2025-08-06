@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './css/Navbar.css';
+import logo from '../images/logo.png'
 
 const Navbar = () => {
   return (
@@ -8,7 +9,7 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-lg navbar-light bg-light custom-navbar">
         <div className="container">
           <a className="navbar-brand d-flex align-items-center logo-animate" href="/">
-            <img src="/images/logo.png" alt="Career Path Logo" width="50" height="50" />
+            <img src={logo} alt="Career Path Logo" width="50" height="50" />
             <span className="fw-bold brand-text ms-2">Career Path</span>
           </a>
 

@@ -4,23 +4,29 @@ import { Container, Row, Col, Card, Image } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/Testimonials.css';
+import test1 from '../images/test1.png';
+import test2 from '../images/test1.png';
+import test3 from '../images/test1.png';
 
 const Testimonials = () => {
   const testimonials = [
     {
       name: 'Ananya, CS Student',
       text: '"This platform helped me identify a career path I never considered. The insights were spot-on!"',
-      avatar: '/images/test1.png',
+      // avatar: '/images/test1.png',
+      avatar: test1
     },
     {
       name: 'Rajesh, Aspiring Developer',
       text: '"The AI analysis from my YouTube watch history was surprisingly accurate. Loved the learning roadmap!"',
-      avatar: '/images/test2.png',
+      // avatar: '/images/test2.png',
+      avatar: test2
     },
     {
       name: 'Fatima, Graduate',
       text: '"Very clean UI and smooth experience. I instantly got a direction with learning videos to start with."',
-      avatar: '/images/test3.png',
+      // avatar: '/images/test3.png',
+      avatar: test3
     },
   ];
 

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './personality.css'; // Assuming this CSS file exists for the new styles
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useAuth } from './components/AuthContext';
+import appLogo from './images/appLogo.png';
 
 const PersonalityInterest = () => {
     const REQUEST_STATE = { PENDING: 'pending', FAILED: 'failed', COMPLETED: 'completed', NOTFOUND: 'notfound' };
@@ -241,7 +242,7 @@ const PersonalityInterest = () => {
                 {/* heading section */}
                 <section id='heading'>
                     <center>
-                        <img className='logo' src="/images/appLogo.png" alt="logo" width="110" height="110" />
+                        <img className='logo' src={appLogo} alt="logo" width="110" height="110" />
                     </center>
                     <center>
                         <h1 className='pageHeading' style={{ paddingTop: '0.5rem' }}>Personality Insight Dashboard</h1>

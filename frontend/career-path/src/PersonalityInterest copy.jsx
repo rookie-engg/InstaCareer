@@ -83,6 +83,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import appLogo from './images/appLogo.png';
 
 const PersonalityInterest = () => {
   // console.log(modelRes)

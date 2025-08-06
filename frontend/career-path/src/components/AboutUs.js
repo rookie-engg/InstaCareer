@@ -1,6 +1,10 @@
 import React from 'react';
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
 import './css/aboutUs.css';
+import aboutus from '../images/aboutus.png';
+import test1 from '../images/test1.png';
+import test2 from '../images/test2.png';
+import test3 from '../images/test3.png';
 
 const AboutUs = () => {
   return (
@@ -10,7 +14,7 @@ const AboutUs = () => {
         <Row className="align-items-center">
           {/* Image on Left */}
           <Col md={6} className="mb-4 mb-md-0">
-            <Image src='/images/aboutus.png' alt="CareerPath AI Illustration" fluid className="rounded shadow-sm" />
+            <Image src={aboutus} alt="CareerPath AI Illustration" fluid className="rounded shadow-sm" />
           </Col>
 
           {/* Text on Right */}
@@ -34,17 +38,17 @@ const AboutUs = () => {
             <h5 className="fw-bold mt-4">Our Team</h5>
             <div className="d-flex gap-4 mt-3">
               <div className="text-center">
-                <Image src='/images/test1.png' roundedCircle width="60" height="60" />
+                <Image src={test1} roundedCircle width="60" height="60" />
                 <p className="small mt-2 mb-0">Rajesh</p>
                 <p className="small text-secondary">Founder</p>
               </div>
               <div className="text-center">
-                <Image src='/images/test2.png' roundedCircle width="60" height="60" />
+                <Image src={test2} roundedCircle width="60" height="60" />
                 <p className="small mt-2 mb-0">Fatima</p>
                 <p className="small text-secondary">UI Designer</p>
               </div>
               <div className="text-center">
-                <Image src='/images/test3.png' roundedCircle width="60" height="60" />
+                <Image src={test3} roundedCircle width="60" height="60" />
                 <p className="small mt-2 mb-0">Anjum</p>
                 <p className="small text-secondary">Dev Lead</p>
               </div>

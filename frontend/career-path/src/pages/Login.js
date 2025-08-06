@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../components/css/style.css';
 import { useAuth } from '../components/AuthContext';
+import logo from '../images/logo.png';
+import loginpage from '../images/loginpage.jpg';
 
 const Login = () => {
   const [email, setEmail] = useState("sahushivam1504@gmail.com");
@@ -83,7 +85,7 @@ const Login = () => {
           {/* Login Section */}
           <div className="col-md-6">
             <div className="login_container">
-              <center><img src="/images/logo.png" alt="Career Path Logo" width="50" height="50" /></center>
+              <center><img src={logo} alt="Career Path Logo" width="50" height="50" /></center>
               <h3 className="mb-4 mt-2 text-center">Login</h3>
 
               <form onSubmit={handleSubmit}>
@@ -152,7 +154,7 @@ const Login = () => {
           {/* Image Section */}
 
           <div className="col-md-6 image-container">
-            <img src="/images/loginpage.jpg" alt="Login Visual" />
+            <img src={loginpage} alt="Login Visual" />
           </div>
         </div>
       </div>

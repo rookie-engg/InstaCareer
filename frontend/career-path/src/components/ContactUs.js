@@ -1,5 +1,6 @@
 import React from 'react';
 import './css/ContactUs.css';
+import contact from '../images/contact.png';
 
 const ContactUs = () => {
   return (
@@ -38,7 +39,8 @@ const ContactUs = () => {
           <div className="col-md-6 mb-4 mb-md-0">
             <div className="contact-image">
               <img
-                src="/images/contact.png" // replace with your actual image path
+                // src="/images/contact.png" // replace with your actual image path
+                src={contact}
                 alt="Contact Us Illustration"
                 className="img-fluid rounded"
               />

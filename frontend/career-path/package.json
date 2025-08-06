@@ -2,6 +2,7 @@
   "name": "career-path",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/icareer",
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -44,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0"
   }
 }
