@@ -59,21 +59,25 @@ const SignUp = () => {
 
         const res = await fetch('/icareer/register', {
           method: 'POST',
-          body: formData,
+          body: JSON.stringify({
+            name, email, password
+          }),
           headers: {
             'content-type': 'application/json'
           }
         });
         if (res.ok) {
-          // alert('Registration successful! login');
+          alert('Registration successful! Please Login');
           const { id, token, role } = await res.json();
           setToken(token);
           if (role == 'ADMIN') {
             navigate('/admin');
             return;
           }
-          navigate(`/upload/${id}`);
-        } else {
+          navigate(`/login`);
+        } else if (res.status == 403) {
+          alert('Already Email exists!! ❌');
+        }else {
           alert('sign up failed');
         }
       } catch (err) {

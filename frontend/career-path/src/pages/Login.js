@@ -91,12 +91,12 @@ const Login = () => {
               <h3 className="mb-4 mt-2 text-center">Login</h3>
 
               <form onSubmit={handleSubmit}>
-                <div className="google-btn">
+                {/* <div className="google-btn">
                   <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google Logo" />
                   Sign in with Google
                 </div>
 
-                <p className="text-body-tertiary text-center">Or sign in with email</p>
+                <p className="text-body-tertiary text-center">Or sign in with email</p> */}
 
                 <div className="mb-3">
                   <input

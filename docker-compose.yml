@@ -48,7 +48,6 @@ services:
       - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
 
-      # ✅ CORRECTED: Listener configuration for inter-container communication
       # Maps the listener names to security protocols.
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       # Defines the listeners the broker will use. PLAINTEXT listens on all interfaces inside the container.

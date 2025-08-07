@@ -67,7 +67,7 @@ const UserDashboard = () => {
           <button className="btn btn-primary mt-3 rounded-pill px-4 py-2" onClick={() => navigate(`/upload/${userid}`)}>⬆️ Upload New</button>
           <button className="btn btn-danger mt-3 rounded-pill px-4 py-2" onClick={() => {
             setToken(null);
-            navigate(`/login`);
+            navigate('/logout');
           }}><i className="bi bi-box-arrow-right"></i> Logout</button>
         </div>
       </div>

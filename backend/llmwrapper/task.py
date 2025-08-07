@@ -49,7 +49,7 @@ def video_description_task_executor(
     Processes a task to fetch and analyze YouTube video descriptions.
     It first checks the database for existing descriptions before fetching new ones.
     '''
-
+    
     id: str = task['id']
     activities: List[YouTubeActivity] = task['activities']
     

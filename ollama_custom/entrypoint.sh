@@ -17,6 +17,7 @@ echo "Ollama server started."
 # Pull the model(s)
 echo "Pulling gemma3:1b model..."
 ollama pull gemma3:1b
+ollama run gemma3:1b
 echo "Model pull complete."
 
 # Bring the server process to the foreground

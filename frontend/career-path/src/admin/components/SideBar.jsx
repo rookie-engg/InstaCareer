@@ -9,7 +9,7 @@ export default function SideBar({ width, users, onSearch, searchQuery }) {
 
     const handleLogout = () => {
         setToken(null);      // This will clear the token from localStorage and state
-        navigate('/login');  // Redirect user to the login page
+        navigate('/');  // Redirect user to the login page
     };
 
     return (
