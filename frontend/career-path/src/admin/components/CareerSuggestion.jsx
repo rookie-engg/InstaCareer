@@ -1,15 +1,10 @@
-import React, { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./careerSuggestion.css"; // Make sure this CSS file exists
 
 const CareerSuggestion = ({ careerData }) => {
 
-  useEffect(() => {
-    AOS.init({ duration: 800, once: true });
-  }, []);
-
+  // If careerData is not yet available, show a loading spinner.
   if (!careerData) {
     return (
         <div className="d-flex justify-content-center align-items-center" style={{minHeight: '50vh'}}>
@@ -23,17 +18,18 @@ const CareerSuggestion = ({ careerData }) => {
     );
   }
 
+  // Render the component without any data-aos animation attributes.
   return (
     <div className="career-bg">
         <div className="parallax-layer" style={{ backgroundImage: "url(/images/careerBack1.png)" }}></div>
         <div className="parallax-layer" style={{ backgroundImage: "url(/images/careerBack2.png)", top: "200px" }}></div>
 
         <div className="container py-5 text-white position-relative">
-            <h2 className="text-center mb-5 fw-bold" data-aos="fade-down">
+            <h2 className="text-center mb-5 fw-bold">
                 Career Suggestions Dashboard
             </h2>
 
-            <section className="mb-5" data-aos="fade-right">
+            <section className="mb-5">
                 <h4 className="mb-4 fw-bold text-info">
                     Career Suggestions with Justifications
                 </h4>
@@ -44,7 +40,7 @@ const CareerSuggestion = ({ careerData }) => {
                         const confidenceColor = confidence >= 80 ? "#198754" : confidence >= 60 ? "#ffc107" : "#dc3545";
 
                         return (
-                            <div className="col-md-6 col-lg-4" key={index} data-aos="fade-up" data-aos-delay={index * 100}>
+                            <div className="col-md-6 col-lg-4" key={index}>
                                 <div className="card gradient-card text-dark p-3 shadow h-100 position-relative border-2" style={{ borderTop: `6px solid ${confidenceColor}`, borderRadius: "1rem", overflow: "hidden", transition: "transform 0.3s ease" }}>
                                     <div className="card-body">
                                         <h5 className="fw-semibold mb-2 mt-2 d-flex justify-content-between align-items-center">
@@ -60,7 +56,7 @@ const CareerSuggestion = ({ careerData }) => {
                 </div>
             </section>
 
-            <section className="mb-5" data-aos="fade-left">
+            <section className="mb-5">
                 <h4 className="mb-4 fw-bold text-warning">Mapped Interests to Careers</h4>
                 <ul className="list-group">
                     {Object.entries(careerData.mapped_interest_to_careers || {}).map(([interest, careers], idx) => (
@@ -74,7 +70,7 @@ const CareerSuggestion = ({ careerData }) => {
                 </ul>
             </section>
 
-            <section className="mb-5" data-aos="fade-up">
+            <section className="mb-5">
                 <h4 className="mb-4 fw-bold text-success">Confidence Scores</h4>
                 {Object.entries(careerData.confidence_scores || {}).map(([career, score], idx) => {
                     const percentage = Math.round(score * 100);

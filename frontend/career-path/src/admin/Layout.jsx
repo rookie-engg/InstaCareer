@@ -5,8 +5,15 @@ import { useError } from "./globals/ErrorContext";
 import SideBar from "./components/SideBar";
 import { useAuth } from "../components/AuthContext";
 
-// ✅ --- Updated elegant scrollbar styles ---
-const scrollbarStyles = `
+// ✅ --- Style block with the new font import and styles ---
+const adminStyles = `
+    @import url('https://fonts.googleapis.com/css2?family=Playball&family=Poppins:wght@400;500;600&display=swap');
+
+    .admin-wrapper {
+        /* Poppins is a clean, geometric font that's highly readable for UI */
+        font-family: 'Poppins', sans-serif;
+    }
+
     .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -52,7 +59,7 @@ export default function Layout() {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const {token, setToken} = useAuth();
+    const { token, setToken } = useAuth();
 
     useEffect(() => {
         async function fetchUsers() {
@@ -78,7 +85,6 @@ export default function Layout() {
     const handleSearch = (event) => {
         const query = event.target.value;
         setSearchQuery(query);
-        // ✅ FIX: Changed to filter by 'name', 'email', and 'id'
         const filtered = query
             ? users.filter(user =>
                 user.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -90,8 +96,9 @@ export default function Layout() {
     };
 
     return (
-        <div className="d-flex">
-            <style>{scrollbarStyles}</style>
+        // ✅ --- Added "admin-wrapper" className here ---
+        <div className="d-flex admin-wrapper">
+            <style>{adminStyles}</style>
             <SideBar
                 width={sidebarWidth}
                 users={filteredUsers}

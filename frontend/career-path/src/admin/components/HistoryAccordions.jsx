@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { createRoot } from 'react-dom/client';
 import { useError } from "../globals/ErrorContext";
 import { useAlert } from '../globals/AlertContext';
 import HistoryAccordionsPlaceholder from "./HistoryAccordionsPlaceholder";
@@ -10,6 +9,7 @@ import './personality.css';
 import './careerSuggestion.css';
 import { useAuth } from "../../components/AuthContext";
 
+// This modal component is used to display the dashboards.
 const DashboardModal = ({ show, handleClose, title, children, onGeneratePdf }) => {
     if (!show) {
         return null;
@@ -40,6 +40,7 @@ const DashboardModal = ({ show, handleClose, title, children, onGeneratePdf }) =
     );
 };
 
+// A recursive component to nicely format and display JSON data.
 function JSONViewer({ data }) {
     const [openSections, setOpenSections] = useState({});
 
@@ -77,13 +78,15 @@ function JSONViewer({ data }) {
     );
 }
 
+// Represents a single item in the history accordion.
 function HistoryAccordion({ historyId, accordionId, accordionParent, history, onDelete, status, errorShownForHistory, setErrorShownForHistory }) {
     const { showError } = useError();
     const { showAlert } = useAlert();
     const [showDashboard, setShowDashboard] = useState(null);
     const [parsedResponse, setParsedResponse] = useState(null);
-    const { token, setToken } = useAuth();
+    const { token } = useAuth();
 
+    // This effect parses the model response data when the history item is completed.
     useEffect(() => {
         if (status === 'COMPLETED') {
             try {
@@ -109,6 +112,7 @@ function HistoryAccordion({ historyId, accordionId, accordionParent, history, on
         }
     }, [history, status, showError, historyId, errorShownForHistory, setErrorShownForHistory]);
 
+    // Handles the generation of a PDF from the modal's content.
     const handleGeneratePdf = () => {
         const dashboardType = showDashboard;
         if (!dashboardType) return;
@@ -125,7 +129,7 @@ function HistoryAccordion({ historyId, accordionId, accordionParent, history, on
         printWindow.document.write('<style>');
         printWindow.document.write(`
             @media print {
-                body { -webkit-print-color-adjust: exact; }
+                body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
                 .modal-footer { display: none; }
             }
         `);
@@ -209,6 +213,7 @@ function HistoryAccordion({ historyId, accordionId, accordionParent, history, on
     );
 }
 
+// The main component that fetches and displays the list of history accordions for a user.
 export default function HistoryAccordions({ userId }) {
     const { showError } = useError();
     const [isLoading, setIsLoading] = useState(true);
@@ -234,7 +239,7 @@ export default function HistoryAccordions({ userId }) {
             setIsLoading(false);
         }
         fetchHistory();
-    }, [userId, showError]);
+    }, [userId, showError, token]);
 
     if (isLoading) return <HistoryAccordionsPlaceholder />;
 

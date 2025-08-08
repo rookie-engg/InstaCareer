@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './personality.css'; // Make sure this CSS file exists
 import 'bootstrap/dist/css/bootstrap.min.css';
+import appLogo from '../../images/appLogo.png';
 
 const PersonalityInterest = ({ modelRes, correlatedId }) => {
     console.log(modelRes);
@@ -98,7 +99,7 @@ const PersonalityInterest = ({ modelRes, correlatedId }) => {
             <div className="container">
                 <section id='heading'>
                     <center>
-                        <img className='logo' src="/images/appLogo.png" alt="logo" width="110" height="110" />
+                        <img className='logo' src={appLogo} alt="logo" width="110" height="110" />
                     </center>
                     <center>
                         <h1 className='pageHeading' style={{ paddingTop: '0.5rem' }}>Personality Insight Dashboard</h1>
