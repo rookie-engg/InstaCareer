@@ -1,14 +1,5 @@
 # 📸 InstaCareer
 
-## 🚧 UNDER DEVELOPMENT 🚧  
-> devs be like:  
-> ![This is fine](https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif)
+InstaCareer is a platform that lists curated career paths for students and professionals by analyzing their social media data, such as YouTube, using an LLM model. Based on their interests rather than relying on traditional approaches, it suggests the career paths that may be most suitable for them.
 
-⚙️ Expect bugs, chaos, and occasional breakthroughs.  
-💡 Feature ideas come to us in dreams... and Stack Overflow comments.  
-🧠 AI is helping. So if it breaks, blame the robots.
-
-> **Coming soon:**  
-> The only career app where you can scroll through your regrets *and* job offers.
-
-### 🛠️ Stay tuned. We’ll keep coding anyway.
+<img src="./screenshot.png" alt="screenshot" />
