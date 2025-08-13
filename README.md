@@ -17,9 +17,12 @@ Note. docker is not madatory it just keeps the things simple
 
 ```bash
 git clone https://github.com/rookie-engg/InstaCareer.git
+```
 
 ```bash
 cd InstaCareer
+```
 
 ```bash
 docker compose up --build -d
+```
