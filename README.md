@@ -15,8 +15,11 @@ Note. docker is not madatory it just keeps the things simple
 
 ### Clone the Repo
 
-```bash git clone https://github.com/rookie-engg/InstaCareer.git
+```bash
+git clone https://github.com/rookie-engg/InstaCareer.git
 
-```bash cd InstaCareer
+```bash
+cd InstaCareer
 
-```bash docker compose up --build -d
+```bash
+docker compose up --build -d
